@@ -5,38 +5,64 @@ import * as actions from '../actions';
 
 class LeftMenu extends Component {
 
-  subMenu(data,i) {
+  subMenu(data,j) {
       return (
-        <div key={i}><Link to={"/"+data.type} activeClassName="active">{data.label}</Link></div>
+        <div key={j}><Link to={"/"+data.type} className={data.type+"-icon "} activeClassName="active">{data.label}</Link></div>
       );
   }
 
   menu(data,i) {
-      var accType = (this.props.config.activeAccType == data.type?"":data.type);
-      var html = <div key={i} className="panel">
-                    <button onClick={() => this.props.leftMenuToggle(true,accType)} data-toggle="collapse" className={(this.props.config.activeAccType != data.type?"collapsed ":"") + data.type}>
+      var accType;
+      var collapseIn;
+      if(this.props.config.activeAccType == data.type)
+      {
+        accType = "";
+        collapseIn = " in";
+      }
+      else
+      {
+        accType = data.type;
+        collapseIn = "";
+      }
+
+      return (
+              <div key={i} className="panel">
+                    <button
+                      onClick={() => this.props.leftMenuToggle(true,accType)}
+                      data-toggle="collapse"
+                      className={(this.props.config.activeAccType != data.type?"collapsed ":"") + data.type}
+                    >
                       <span>{data.label}</span>
                     </button>
-                    <div className={"panel-collapse collapse" + (this.props.config.activeAccType == data.type?" in":"")}>
-
-                      {data.child.map(this.subMenu,this)}
-
+                    <div className={"panel-collapse collapse" + collapseIn}>
+                      {data.child.map(function(thisData,j){
+                        //onClick={() => this.props.leftMenuToggle(true,data.type,thisData.type)}
+                        return (
+                          <div key={j}>
+                            <Link
+                              to={"/"+thisData.type}
+                              className={thisData.type+"-icon"+(this.props.config.activeType == thisData.type?" active ":"")}
+                              activeClassName="active"
+                            >
+                              {thisData.label}
+                            </Link>
+                          </div>
+                        );
+                      },this)}
                     </div>
                  </div>
-
-      return(html);
+            );
   }
 
   render(state) {
+    //console.log("left");
     return (
       <div className="sidebar">
         <h4 className="heading"><span>{this.props.data.label}</span></h4>
-        <div className="items" id="left-nav-acc">
-
-          {this.props.data.child.map(this.menu,this)}
-
+        <div className="items">
+            {this.props.data.child.map(this.menu,this)}
         </div>
-        <button id="left-collapse-btn" onClick={() => this.props.leftMenuToggle(!this.props.config.isOpen)} className="collapse-btn"></button>
+        <button id="left-collapse-btn" onClick={() => this.props.leftMenuToggle(!this.props.config.isOpen,this.props.config.activeAccType)} className="collapse-btn"></button>
       </div>
     );
   }

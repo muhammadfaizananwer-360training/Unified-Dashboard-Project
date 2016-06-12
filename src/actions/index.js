@@ -83,12 +83,13 @@ export function fetchBrand(){
   };
 }
 
-export function leftMenuToggle(isOpen, activeAccType = ''){
+export function leftMenuToggle(isOpen,activeAccType="", activeType=""){
   return{
     type:LEFT_MENU,
     payload:{
       "isOpen":isOpen,
-      "activeAccType":activeAccType
+      "activeAccType":activeAccType,
+      "activeType":activeType
     }
   };
 }

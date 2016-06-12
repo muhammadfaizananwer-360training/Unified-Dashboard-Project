@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Unified Dashboard",
   "main": "index.js",
-  "repository": "https://github.com/360Training/dashboard-POC-UI.git",
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
@@ -30,7 +29,6 @@
     "babel-preset-stage-1": "^6.1.18",
     "lodash": "^3.10.1",
     "react": "^0.14.3",
-    "react-bootstrap": "^0.29.4",
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.0",
     "react-router": "^2.0.1",

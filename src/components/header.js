@@ -21,6 +21,7 @@ class Header extends Component {
   }
 
   render() {
+    //console.log("header");
     var logoUrl = {backgroundImage: 'url("' + this.props.data.logo.source + '")'};
     return (
         <nav className="navbar-fixed-top">

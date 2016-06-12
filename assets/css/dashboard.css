@@ -99,7 +99,7 @@ body {
     border-color: #ddd;
 }
 .navbar-fixed-top .dropdown-menu-right a{
-	font-family: "Open Sans";
+	/*font-family: "Open Sans";*/
     color: #606972;
     font-weight: 400;
     min-height: 30px;

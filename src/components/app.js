@@ -22,7 +22,7 @@ class App extends Component {
               data={{
                 logo:this.props.branding.logo,
                 menu:this.props.branding.topMenu.child,
-                user:this.props.branding.userData,
+                user:this.props.branding.userData
               }}
               config={this.props.topMenu}
             />
