@@ -1,22 +1,35 @@
 import React, { Component } from 'react';
 import Header from './header';
 import LeftMenu from './left-menu';
+import ToolTip from './tool-tip';
 import {connect} from 'react-redux';
 import * as actions from '../actions';
 
 class App extends Component {
 
-  componentDidMount() {
+  constructor(props) {
+    super(props);
     this.props.fetchBrand();
     this.props.topMenuToggle(false);
     this.props.leftMenuToggle(true);
   }
 
   render() {
+    var toolTipDiv;
+    if(this.props.toolTip.visible)
+    {
+      toolTipDiv = <ToolTip pos={this.props.toolTip.pos} css={this.props.toolTip.css} content={this.props.toolTip.content} />;
+    }
+    else
+    {
+      toolTipDiv = <div></div>;
+    }
+
     if(typeof this.props.branding.logo != 'undefined')
     {
       return (
         <div>
+          {toolTipDiv}
           <div id="wrapper" className={(!this.props.leftMenu.isOpen)?"left-toggle":""}>
             <Header
               data={{
@@ -49,7 +62,8 @@ function mapState(state) {
   return {
           "branding":state.branding,
           "topMenu":state.topMenu,
-          "leftMenu":state.leftMenu
+          "leftMenu":state.leftMenu,
+          "toolTip":state.tooltip
          };
 }
 

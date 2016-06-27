@@ -2,17 +2,31 @@ import axios from 'axios';
 import {
   FETCH_BRAND,
   TOP_MENU,
-  LEFT_MENU
+  LEFT_MENU,
+  TOOL_TIP,
+  COURSE_COUNTERS,
 } from './types';
 
 export function fetchBrand(){
 
   //const request = axios.get("https://10.0.100.86:8243/UDBbrand/1.0.0/brandJSON");
-  const request2 = {
+  /*var config = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      "Content-Type": 'application/json; charset=utf-8',
+      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+      'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE2LTA2LTI4VDAwOjI5OjA4LjQ4OCIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9MRUFSTkVSIiwiUk9MRV9UUkFJTklOR0FETUlOSVNUUkFUT1IiLCJST0xFX0lOU1RSVUNUT1IiLCJST0xFX1JFR1VMQVRPUllBTkFMWVNUIiwiUk9MRV9MTVNBRE1JTklTVFJBVE9SIl0sImNsaWVudF9pZCI6IlRlc3RDbGllbnQiLCJzY29wZSI6WyJSRUFEIiwiVFJVU1QiLCJXUklURSJdfQ.3VqV4whOdP9Q_SxapA72Dc2OX3y_1yvuzXFy6Oi5PBQ"
+    }
+  };
+
+  const request = axios.post("http://10.0.100.94:8080/LS360ApiGateway/services/rest/10octcustomer21111%40lms.com/brand",config);
+  */
+
+  const request = {
       logo:{
         label:"360training",
-        source:"assets/img/logo.svg",
-        url:"/"
+        source:"../assets/img/logo.svg",
+        url:"/LS360Dashboard"
       },
       userData:{
         name:"Username",
@@ -79,7 +93,7 @@ export function fetchBrand(){
 
   return{
     type:FETCH_BRAND,
-    payload:request2
+    payload:request
   };
 }
 
@@ -100,5 +114,35 @@ export function topMenuToggle(isOpen){
     payload:{
       "isOpen":isOpen
     }
+  }
+}
+
+export function tooltip(visible,pos='default',css={},content=""){
+  return{
+    type:TOOL_TIP,
+    payload:{
+      "visible":visible,
+      "pos":pos,
+      "css":css,
+      "content":content
+    }
+  }
+}
+
+export function courseCounters(){
+  /*const request = axios.post("https://10.0.100.86:8243/UDBbrand/1.0.0/brandJSON",{headers: {
+        'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE2LTA2LTI4VDAwOjI5OjA4LjQ4OCIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9MRUFSTkVSIiwiUk9MRV9UUkFJTklOR0FETUlOSVNUUkFUT1IiLCJST0xFX0lOU1RSVUNUT1IiLCJST0xFX1JFR1VMQVRPUllBTkFMWVNUIiwiUk9MRV9MTVNBRE1JTklTVFJBVE9SIl0sImNsaWVudF9pZCI6IlRlc3RDbGllbnQiLCJzY29wZSI6WyJSRUFEIiwiVFJVU1QiLCJXUklURSJdfQ.3VqV4whOdP9Q_SxapA72Dc2OX3y_1yvuzXFy6Oi5PBQ"
+      }});*/
+  const request = {
+         "all": 5,
+         "notstarted": 3,
+         "subscriptions": 1585,
+         "inProgress": 1,
+         "completed": 1
+       };
+
+  return{
+    type:COURSE_COUNTERS,
+    payload:request
   }
 }
