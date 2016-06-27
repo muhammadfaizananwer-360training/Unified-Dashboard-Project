@@ -15,7 +15,7 @@ class Header extends Component {
     else
     {
       return (
-        <li key={i}><Link to={"/"+data.type} activeClassName="active">{data.label}</Link></li>
+        <li key={i}><Link to={"/LS360Dashboard/"+data.type} activeClassName="active">{data.label}</Link></li>
       );
     }
   }
