@@ -8,13 +8,17 @@ export default function({dispatch}){
       return next(action);
     }
 
-    console.log('M2');
+    //console.log('M2',action.type);
 
     // M2
     action.payload
       .then(function(response){
-        const newAction = {...action, payload:response.data}
-        dispatch(newAction);
-      })
+        //const newAction = {...action, payload:response.data}
+        dispatch({...action, payload:response.data});
+      }).catch(function (response) {
+        //const newAction = {...action, payload:response}
+         dispatch({...action, payload:response});
+     });
+
   }
 }

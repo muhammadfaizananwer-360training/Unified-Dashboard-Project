@@ -100,20 +100,20 @@
 		<div class="main">
 			<h1 class="page-heading">My Courses</h1>
 
-			<div class="row statistics">
-				<div class="col-xs-6 col-sm-4">
+			<div class="statistics">
+				<div class="statistics-col">
 				  <div class="placeholder">
 					<h4>11</h4>
 					<span>Number Of My Courses</span>
 				  </div>
 				</div>
-				<div class="col-xs-6 col-sm-4">
+				<div class="statistics-col">
 				  <div class="placeholder">
 					  <h4>3,456</h4>
 					  <span>Courses In Your Subscription</span>
 				  </div>
 				</div>
-				<div class="col-xs-12 col-sm-4">
+				<div class="statistics-col">
 				  <div class="placeholder">
 					  <h4>2</h4>
 					  <span>Courses You've Completed</span>
@@ -126,11 +126,11 @@
 						<input type="text" class="form-control" placeholder="Search Your Courses By Keyword"></input>
 					</li>
 					<li class="filters" id="iso-filter-btns">
-						<button type="button" class="active" data-filter="*">All</button>
-						<button type="button" data-filter=".new">New</button>
-						<button type="button" data-filter=".started">Started</button>
-						<button type="button" data-filter=".completed">Completed</button>
-						<button type="button" data-filter=".subscription">Subscription</button>
+  						<button type="button" class="active" data-filter="*">All</button>
+  						<button type="button" data-filter=".new">New</button>
+  						<button type="button" data-filter=".started">Started</button>
+  						<button type="button" data-filter=".completed">Completed</button>
+  						<button type="button" data-filter=".subscription">Subscription</button>
 					</li>
 					<li class="sorting">
 						<button data-toggle="dropdown" class="dropdown-toggle" type="button"></button>
@@ -138,6 +138,19 @@
 							<li><a href="#">Sort Ascending (A-Z)</a></li>
 							<li><a href="#">Sort Descending (Z-A)</a></li>
 						</ul>
+					</li>
+          <li class="merge-filter-sorting">
+            <button data-toggle="dropdown" class="dropdown-toggle" type="button"></button>
+            <ul role="menu" class="dropdown-menu dropdown-menu-right">
+              <li><a href="#">All</a></li>
+              <li><a href="#">New</a></li>
+              <li><a href="#">Started</a></li>
+              <li><a href="#">Completed</a></li>
+              <li><a href="#">Subscription</a></li>
+              <li class="divider"></li>
+              <li><a href="#">Sort Ascending (A-Z)</a></li>
+              <li><a href="#">Sort Descending (Z-A)</a></li>
+            </ul>
 					</li>
 				</ul>
 				<div id="isotope"></div>

@@ -5,24 +5,57 @@ import {
   LEFT_MENU,
   TOOL_TIP,
   COURSE_COUNTERS,
+  CHANGE_AUTH,
+  ISOTOPE
 } from './types';
+
+var server = 'http://10.0.215.78:8080'; //QA
+
+export function authentication(isLogin,userName="",pass=""){
+
+  var token = false;
+  if(isLogin)
+  {
+    var config = {
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      params:{
+        "userName": userName,
+  			"password": pass
+      }
+    };
+    token = axios.get("/LS360Dashboard/token/get",config);
+    //token = axios.get("/LS360Dashboard/token/get",config);
+    //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE2LTA2LTI5VDAyOjE4OjQ0LjIzMiIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9MRUFSTkVSIiwiUk9MRV9UUkFJTklOR0FETUlOSVNUUkFUT1IiLCJST0xFX0lOU1RSVUNUT1IiLCJST0xFX1JFR1VMQVRPUllBTkFMWVNUIiwiUk9MRV9MTVNBRE1JTklTVFJBVE9SIl0sImNsaWVudF9pZCI6IlRlc3RDbGllbnQiLCJzY29wZSI6WyJSRUFEIiwiVFJVU1QiLCJXUklURSJdfQ.QMxYwULpVR2rAMYjqtR3AvPpg_4LhZdjgp80juFwOAk";
+    sessionStorage.setItem("userName",userName);
+  }
+
+  return{
+    type:CHANGE_AUTH,
+    payload:token,
+    login:isLogin
+  };
+}
 
 export function fetchBrand(){
 
-  //const request = axios.get("https://10.0.100.86:8243/UDBbrand/1.0.0/brandJSON");
-  /*var config = {
+  var config = {
     headers: {
       'Access-Control-Allow-Origin': '*',
-      "Content-Type": 'application/json; charset=utf-8',
-      'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
-      'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE2LTA2LTI4VDAwOjI5OjA4LjQ4OCIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9MRUFSTkVSIiwiUk9MRV9UUkFJTklOR0FETUlOSVNUUkFUT1IiLCJST0xFX0lOU1RSVUNUT1IiLCJST0xFX1JFR1VMQVRPUllBTkFMWVNUIiwiUk9MRV9MTVNBRE1JTklTVFJBVE9SIl0sImNsaWVudF9pZCI6IlRlc3RDbGllbnQiLCJzY29wZSI6WyJSRUFEIiwiVFJVU1QiLCJXUklURSJdfQ.3VqV4whOdP9Q_SxapA72Dc2OX3y_1yvuzXFy6Oi5PBQ"
+      'Content-Type': 'application/json',
+      'Authorization': "bearer "+sessionStorage.auth
+    },
+    params:{
+      access_token : sessionStorage.auth
     }
   };
 
-  const request = axios.post("http://10.0.100.94:8080/LS360ApiGateway/services/rest/10octcustomer21111%40lms.com/brand",config);
-  */
+  const request = axios.post(server+"/LS360ApiGateway/services/rest/brand",JSON.stringify({
+    "username":sessionStorage.userName
+  }),config);
 
-  const request = {
+  const request2 = {
       logo:{
         label:"360training",
         source:"../assets/img/logo.svg",
@@ -50,7 +83,7 @@ export function fetchBrand(){
           label:"Dashboard",
           child:[
             {
-              label:"Learner",
+              label:"Learn",
               type:"learn",
               url:"#",
               child:[
@@ -117,7 +150,7 @@ export function topMenuToggle(isOpen){
   }
 }
 
-export function tooltip(visible,pos='default',css={},content=""){
+export function tooltip(visible,pos='default',css={},content=''){
   return{
     type:TOOL_TIP,
     payload:{
@@ -130,10 +163,25 @@ export function tooltip(visible,pos='default',css={},content=""){
 }
 
 export function courseCounters(){
-  /*const request = axios.post("https://10.0.100.86:8243/UDBbrand/1.0.0/brandJSON",{headers: {
-        'Authorization': "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE2LTA2LTI4VDAwOjI5OjA4LjQ4OCIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9MRUFSTkVSIiwiUk9MRV9UUkFJTklOR0FETUlOSVNUUkFUT1IiLCJST0xFX0lOU1RSVUNUT1IiLCJST0xFX1JFR1VMQVRPUllBTkFMWVNUIiwiUk9MRV9MTVNBRE1JTklTVFJBVE9SIl0sImNsaWVudF9pZCI6IlRlc3RDbGllbnQiLCJzY29wZSI6WyJSRUFEIiwiVFJVU1QiLCJXUklURSJdfQ.3VqV4whOdP9Q_SxapA72Dc2OX3y_1yvuzXFy6Oi5PBQ"
-      }});*/
-  const request = {
+
+  var config = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+      'Authorization': "bearer "+sessionStorage.auth
+    },
+    params: {
+      access_token : sessionStorage.auth
+    }
+  };
+  const request = axios.post(server+"/LS360ApiGateway/services/rest/lms/customer/learner/course/count",JSON.stringify({
+    "userName": sessionStorage.userName,
+    "countType": [
+      "all","subscriptions","completed","inProgress","notstarted"
+    ]
+  }),config);
+
+  const request2 = {
          "all": 5,
          "notstarted": 3,
          "subscriptions": 1585,
@@ -145,4 +193,269 @@ export function courseCounters(){
     type:COURSE_COUNTERS,
     payload:request
   }
+}
+
+export function getIsotope(){
+
+  var config = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+      'Authorization': "bearer "+sessionStorage.auth
+    },
+    params:{
+      access_token : sessionStorage.auth
+    }
+  };
+
+  const request = axios.post(server+"/LS360ApiGateway/services/rest/lms/customer/learner/courses",JSON.stringify({
+    "userName":sessionStorage.userName
+  }),config);
+
+  const request2 = [
+        {"courseSubType": "Self Paced Course",
+				"startDate": "2016-06-28",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123456,
+				"expiryDate": "2016-06-28",
+				"certificateURI": "#",
+				"timeSpent": "1H 24M",
+				"courseImage": "",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "2a8cacb1b6e3455caf8ca9e9d19ce9ee",
+				"courseProgress": 100,
+				"courseStatus": "completed",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Online Course",
+				"completionDate": "2016-06-28",
+				"courseName": "Designing HP SMB Storage Solutions Rev 15.21 - 00729763 Designing HP SMB Storage Solutions Rev 15.21 - 00729763"
+			  },
+                {
+				"courseSubType": "",
+				"startDate": "2016-06-30",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123457,
+				"expiryDate": "2016-06-30",
+				"certificateURI": "#",
+				"timeSpent": "1H 13M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "5b0a7cfec05b4329b0ed8dd3741dee21",
+				"courseProgress": 0,
+				"courseStatus": "inprogress",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Classroom Course",
+				"completionDate": "2016-06-28",
+				"courseName": "courseProgress 0 First Responder Awareness Level 1 -> ALL"
+			  },
+                {
+				"courseSubType": "",
+				"startDate": "2016-06-30",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123457,
+				"expiryDate": "2016-06-30",
+				"certificateURI": "#",
+				"timeSpent": "1H 13M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "5b0a7cfec05b4329b0ed8dd3741dee21",
+				"courseProgress": 0,
+				"courseStatus": "inprogress",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Webinar Course",
+				"completionDate": "2016-06-28",
+				"courseName": "courseProgress 0 Webinar First Responder Awareness Level 1 -> ALL"
+			  },
+                {
+				"courseSubType": "",
+				"startDate": "2016-06-30",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123457,
+				"expiryDate": "2016-06-30",
+				"certificateURI": "#",
+				"timeSpent": "1H 13M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "5b0a7cfec05b4329b0ed8dd3741dee21",
+				"courseProgress": 0,
+				"courseStatus": "inprogress",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Classroom Course",
+				"completionDate": "2016-06-28",
+				"courseName": "Classroom First Responder Awareness Level 1 -> ALL"
+			  },
+                {
+				"courseSubType": "",
+				"startDate": "2016-06-30",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123457,
+				"expiryDate": "2016-06-30",
+				"certificateURI": "#",
+				"timeSpent": "1H 13M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "5b0a7cfec05b4329b0ed8dd3741dee21",
+				"courseProgress": 0,
+				"courseStatus": "inprogress",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Classroom Course",
+				"completionDate": "2016-06-28",
+				"courseName": "First Responder Awareness Level 1 -> ALL"
+			  },
+                {
+				"courseSubType": "",
+				"startDate": "2016-06-30",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123457,
+				"expiryDate": "2016-06-30",
+				"certificateURI": "#",
+				"timeSpent": "1H 13M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "5b0a7cfec05b4329b0ed8dd3741dee21",
+				"courseProgress": 0,
+				"courseStatus": "inprogress",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Classroom Course",
+				"completionDate": "2016-06-28",
+				"courseName": "First Responder Awareness Level 1 -> ALL"
+			  },
+                {
+				"courseSubType": "",
+				"startDate": "2016-06-30",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123457,
+				"expiryDate": "2016-06-30",
+				"certificateURI": "#",
+				"timeSpent": "1H 13M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "5b0a7cfec05b4329b0ed8dd3741dee21",
+				"courseProgress": 0,
+				"courseStatus": "inprogress",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Classroom Course",
+				"completionDate": "2016-06-28",
+				"courseName": "First Responder Awareness Level 1 -> ALL"
+			  },
+                {
+				"courseSubType": "",
+				"startDate": "2016-06-30",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123457,
+				"expiryDate": "2016-06-30",
+				"certificateURI": "#",
+				"timeSpent": "1H 13M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "5b0a7cfec05b4329b0ed8dd3741dee21",
+				"courseProgress": 0,
+				"courseStatus": "inprogress",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Classroom Course",
+				"completionDate": "2016-06-28",
+				"courseName": "First Responder Awareness Level 1 -> ALL"
+			  },
+                {
+				"courseSubType": "Self Paced Course",
+				"startDate": "2016-06-28",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123456,
+				"expiryDate": "2016-06-28",
+				"certificateURI": "#",
+				"timeSpent": "1H 24M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "2a8cacb1b6e3455caf8ca9e9d19ce9ee",
+				"courseProgress": 56,
+				"courseStatus": "inprogress",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Online Course",
+				"completionDate": "2016-06-28",
+				"courseName": "Anti-Money Laundering"
+			  },
+                {
+				"courseSubType": "Self Paced Course",
+				"startDate": "2016-06-28",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123456,
+				"expiryDate": "2016-06-28",
+				"certificateURI": "#",
+				"timeSpent": "1H 24M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "2a8cacb1b6e3455caf8ca9e9d19ce9ee",
+				"courseProgress": 100,
+				"courseStatus": "completed",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Online Course",
+				"completionDate": "2016-06-28",
+				"courseName": "CourseStatus (completed) Anti-Money Laundering"
+			  },
+                {
+				"courseSubType": "Self Paced Course",
+				"startDate": "2016-06-28",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123456,
+				"expiryDate": "2016-06-28",
+				"certificateURI": "#",
+				"timeSpent": "1H 24M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": false,
+				"courseGUID": "2a8cacb1b6e3455caf8ca9e9d19ce9ee",
+				"courseProgress": 56,
+				"courseStatus": "notstarted",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Classroom Course",
+				"completionDate": "2016-06-28",
+				"courseName": "isExpired=false courseStatus(notstarted) Anti-Money Laundering"
+			  },
+                {
+				"courseSubType": "Self Paced Course",
+				"startDate": "2016-06-28",
+				"viewAssessmentURI": "#",
+				"enrollmentId": 123456,
+				"expiryDate": "2016-06-28",
+				"certificateURI": "#",
+				"timeSpent": "1H 24M",
+				"courseImage": "http://www.360training.com/wcsstore/Megasite/images/360training/healthcare/avoiding-falls-in-LTC-th.jpg",
+				"isSubscriptionEnrollment": false,
+				"isExpired": true,
+				"courseGUID": "2a8cacb1b6e3455caf8ca9e9d19ce9ee",
+				"courseProgress": 56,
+				"courseStatus": "inprogress",
+				"launchURI": "#",
+				"subscriptionTag": "#",
+				"courseType": "Online Course",
+				"completionDate": "2016-06-28",
+				"courseName": "isExpired (true) courseStatus (inprogress) Laundering"
+			  }
+      ];
+
+  return{
+    type:ISOTOPE,
+    payload:request
+  };
 }

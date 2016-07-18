@@ -21,11 +21,10 @@ class Header extends Component {
   }
 
   render() {
-    //console.log("header");
     var logoUrl = {backgroundImage: 'url("' + this.props.data.logo.source + '")'};
     return (
         <nav className="navbar-fixed-top">
-          <Link className="brand" style={logoUrl} to={this.props.data.logo.url} title={this.props.data.logo.label}></Link>
+          <Link className="brand" to={this.props.data.logo.url} title={this.props.data.logo.label}></Link>
           <ul className="menu">
     				<li className="user-detail">
     					<a href="#"><div className="username">{this.props.data.user.name}</div>
