@@ -27,7 +27,7 @@ class Header extends Component {
           <Link className="brand" to={this.props.data.logo.url} title={this.props.data.logo.label}></Link>
           <ul className="menu">
     				<li className="user-detail">
-    					<a href="#"><div className="username">{this.props.data.user.name}</div>
+    					<a href="#"><div className="username">{this.props.data.user.firstName}</div>
     					<div>{this.props.data.user.email}</div></a>
     				</li>
     				<li className={(this.props.config.isOpen?'open':'')}>

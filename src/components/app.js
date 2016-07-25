@@ -9,16 +9,18 @@ class App extends Component {
 
   constructor(props) {
     super(props);
-    this.props.fetchBrand();
-    this.props.topMenuToggle(false);
-    if(typeof(Storage) && typeof localStorage.leftMenu != "undefined")
-    {
-      var obj = JSON.parse(localStorage.leftMenu);
-      this.props.leftMenuToggle(obj.isOpen,obj.activeAccType,obj.activeType);
-    }
-    else
-    {
-      this.props.leftMenuToggle(true);
+    if(typeof this.props.auth != "undefined"){
+      this.props.fetchBrand();
+      this.props.topMenuToggle(false);
+      if(typeof(Storage) && typeof localStorage.leftMenu != "undefined")
+      {
+        var obj = JSON.parse(localStorage.leftMenu);
+        this.props.leftMenuToggle(obj.isOpen,obj.activeAccType,obj.activeType);
+      }
+      else
+      {
+        this.props.leftMenuToggle(true);
+      }
     }
   }
 
@@ -52,7 +54,7 @@ class App extends Component {
     }
     else
     {
-      return (<div></div>);
+      return (<div className="full pre-loader"></div>);
     }
   }
 }

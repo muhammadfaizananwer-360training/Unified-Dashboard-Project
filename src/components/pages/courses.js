@@ -7,29 +7,64 @@ class Courses extends Component {
 
   constructor(props) {
     super(props);
+    this.props.clearState("COURSE_COUNTERS");
     this.props.courseCounters();
+    this.state = {
+      "api_status":0
+    }
   }
+
+  componentWillReceiveProps(nextProps)
+  {
+    if(typeof nextProps.counters.all == "number")
+    {
+      this.setState({"api_status":1});
+    }
+  }
+
+  translateStatus()
+  {
+    switch (this.state.api_status) {
+      case 0:
+        //  loading
+        return " pre-loader";
+        break;
+      case 1:
+        //  success
+        return "";
+        break;
+      case 2:
+        //  fail
+        return " result-fail";
+        break;
+    }
+  }
+
+  numFormation(num = 0)
+  {
+    return String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
+  };
 
   render() {
     return (
       <div>
         <h1 className="page-heading">My Courses</h1>
-        <div className="statistics">
+        <div className={"statistics"+this.translateStatus()}>
   				<div className="statistics-col">
   				  <div className="placeholder">
-  					<h4>{this.props.counters.all}</h4>
+  					<h4>{this.numFormation(this.props.counters.all)}</h4>
   					<span>Number Of My Courses</span>
   				  </div>
   				</div>
   				<div className="statistics-col">
   				  <div className="placeholder">
-  					  <h4>{this.props.counters.subscriptions}</h4>
+  					  <h4>{this.numFormation(this.props.counters.subscriptions)}</h4>
   					  <span>Courses In Your Subscription</span>
   				  </div>
   				</div>
   				<div className="statistics-col">
   				  <div className="placeholder">
-  					  <h4>{this.props.counters.completed}</h4>
+  					  <h4>{this.numFormation(this.props.counters.completed)}</h4>
   					  <span>Courses You&#39;ve Completed</span>
   				  </div>
   				</div>

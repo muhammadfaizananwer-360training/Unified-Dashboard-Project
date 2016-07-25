@@ -5,13 +5,50 @@ import * as actions from '../../../actions';
 
 class Content extends Component {
 
-    componentDidUpdate() {
-        ui.isoTope.init();
+    componentDidUpdate()
+    {
+      ui.isoTope.init();
     }
 
-    constructor(props) {
-        super(props);
-        this.props.getIsotope();
+    constructor(props)
+    {
+      super(props);
+      this.props.clearState("ISOTOPE");
+      this.props.getIsotope();
+      this.state = {
+        "api_status":0
+      }
+    }
+
+    componentWillReceiveProps(nextProps)
+    {
+      if(nextProps.isotope.length > 0)
+      {
+        this.setState({"api_status":1});
+      }
+      else
+      {
+        this.setState({"api_status":0});
+      }
+    }
+
+    translateStatus()
+    {
+
+      switch (this.state.api_status) {
+        case 0:
+          //  loading
+          return <div className="pre-loader"></div>;
+          break;
+        case 1:
+          //  success
+          return "";
+          break;
+        case 2:
+          //  fail
+          return <div className="result-fail"></div>;
+          break;
+      }
     }
 
     image(data)
@@ -62,7 +99,7 @@ class Content extends Component {
         }
     }
 
-    progress(data)
+    progressBar(data)
     {
         switch(data.courseType)
         {
@@ -105,7 +142,11 @@ class Content extends Component {
           case "Online Course":
             if(data.courseStatus == "completed")
             {
-              return <div className="iso-status">{"Completed "+data.completionDate}</div>
+              var sDate = data.completionDate;
+              sDate = sDate.split("T");
+              sDate = String(sDate[0]).split("-");
+              sDate = sDate[1]+"/"+sDate[2]+"/"+sDate[0];
+              return <div className="iso-status">{"Completed "+sDate}</div>
             }
             return;
           break;
@@ -159,7 +200,7 @@ class Content extends Component {
                     {this.image(data)}
                     {this.title(data)}
                     {this.startDate(data)}
-                    {this.progress(data)}
+                    {this.progressBar(data)}
                     {this.timeSpent(data)}
                     {this.courseStatus(data)}
                     <div className="iso-bottom-options">
@@ -170,26 +211,30 @@ class Content extends Component {
         );
     }
 
-    render(){
+    render()
+    {
         if(typeof this.props.isotope != "undefined")
         {
             return (
+              <div>
                 <div id="isotope">
                     {this.props.isotope.map(this.box,this)}
                 </div>
+                {this.translateStatus()}
+              </div>
             );
         }
         else
         {
             return (
-                <div></div>
+                <div>{this.translateStatus()}</div>
             );
         }
-
     }
 }
 
-function mapStatToProps(state){
+function mapStatToProps(state)
+{
     return {"isotope":state.isotope};
 }
 

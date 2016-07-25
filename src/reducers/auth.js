@@ -1,27 +1,20 @@
 import {CHANGE_AUTH} from '../actions/types';
 
-export default function (state = false, action) {
+export default function (state = {}, action) {
 
   switch (action.type) {
     case CHANGE_AUTH:
       if(typeof(Storage))
       {
-        if(action.login)
+        if(typeof action.payload.errors == "undefined")
         {
-          if(typeof action.payload.status != "undefined")
-          {
-            sessionStorage.removeItem("auth");
-            return false;
-          }
-          else
-          {
-            sessionStorage.setItem("auth",action.payload);
-          }
+          //console.log(1);
+          sessionStorage.setItem("auth",action.payload);
         }
         else
         {
+          //console.log(2);
           sessionStorage.removeItem("auth");
-          sessionStorage.removeItem("userName");
         }
       }
       return action.payload;

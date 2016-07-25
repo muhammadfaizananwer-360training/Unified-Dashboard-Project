@@ -1,16 +1,20 @@
+//  App Core Libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
 import "babel-polyfill"
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { Router, Route, browserHistory } from 'react-router';
+import reducers from './reducers';
+import Async from './middlewares/async';
 
+//  App Root Components
 import RequireAuth from './components/auth';
 import App from './components/app';
 import Login from './components/login';
 import Logout from './components/logout';
 
-//  Inner Pages
+//  App Inner Components
 import AccountInfo from './components/pages/account-info';
 import AddressBook from './components/pages/address-book';
 import Billing from './components/pages/billing';
@@ -29,40 +33,36 @@ import Support from './components/pages/support';
 import Terms from './components/pages/terms';
 import NotFound from './components/errors/not-found';
 
-
-import reducers from './reducers';
-import Async from './middlewares/async';
-
 const createStoreWithMiddleware = applyMiddleware(Async)(createStore);
 
 ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <Router history={browserHistory}>
-      <Route path='/'>
-          <Route path='LS360Dashboard'>
-            <Route path='login' component={Login} />
-            <Route component={RequireAuth(App)}>
-              <Route path='account-info' component={AccountInfo} />
-              <Route path='address-book' component={AddressBook} />
-              <Route path='billing' component={Billing} />
-              <Route path='browse-free-courses' component={BrowseFreeCourses} />
-              <Route path='course-report' component={CourseReport} />
-              <Route path='courses' component={Courses} />
-              <Route path='create-course' component={CreateCourse} />
-              <Route path='enroll-users' component={EnrollUsers} />
-              <Route path='manage-users' component={ManageUsers} />
-              <Route path='orders' component={Orders} />
-              <Route path='privacy-policy' component={PrivacyPolicy} />
-              <Route path='run-report' component={RunReport} />
-              <Route path='shop' component={Shop} />
-              <Route path='subscriptions' component={Subscriptions} />
-              <Route path='support' component={Support} />
-              <Route path='terms' component={Terms} />
-              <Route path='sign-out' component={Logout} />
-              <Route path='*' component={NotFound} />
+    <Provider store={createStoreWithMiddleware(reducers)}>
+      <Router history={browserHistory}>
+        <Route path='/'>
+            <Route path='LS360Dashboard'>
+              <Route path='login' component={Login} />
+              <Route component={RequireAuth(App)}>
+                <Route path='account-info' component={AccountInfo} />
+                <Route path='address-book' component={AddressBook} />
+                <Route path='billing' component={Billing} />
+                <Route path='browse-free-courses' component={BrowseFreeCourses} />
+                <Route path='course-report' component={CourseReport} />
+                <Route path='courses' component={Courses} />
+                <Route path='create-course' component={CreateCourse} />
+                <Route path='enroll-users' component={EnrollUsers} />
+                <Route path='manage-users' component={ManageUsers} />
+                <Route path='orders' component={Orders} />
+                <Route path='privacy-policy' component={PrivacyPolicy} />
+                <Route path='run-report' component={RunReport} />
+                <Route path='shop' component={Shop} />
+                <Route path='subscriptions' component={Subscriptions} />
+                <Route path='support' component={Support} />
+                <Route path='terms' component={Terms} />
+                <Route path='sign-out' component={Logout} />
+                <Route path='*' component={NotFound} />
+              </Route>
             </Route>
-          </Route>
-      </Route>
-    </Router>
-  </Provider>
+        </Route>
+      </Router>
+    </Provider>
   , document.querySelector('#dashboard'));
