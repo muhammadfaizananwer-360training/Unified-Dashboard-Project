@@ -1,20 +1,22 @@
 import React, { Component } from 'react';
-import Header from './header';
-import LeftMenu from './left-menu';
-import Tooltip from './tool-tip';
 import {connect} from 'react-redux';
 import * as actions from '../actions';
+import Header from './header';
+import LeftMenu from './left-menu';
+import Tooltip from './helper/tool-tip';
+import Modal from './helper/modal';
 
 class App extends Component {
 
-  constructor(props) {
+  constructor(props)
+  {
     super(props);
     if(typeof this.props.auth != "undefined"){
       this.props.fetchBrand();
       this.props.topMenuToggle(false);
-      if(typeof(Storage) && typeof localStorage.leftMenu != "undefined")
+      if(typeof(Storage) && typeof sessionStorage.leftMenu != "undefined")
       {
-        var obj = JSON.parse(localStorage.leftMenu);
+        var obj = JSON.parse(sessionStorage.leftMenu);
         this.props.leftMenuToggle(obj.isOpen,obj.activeAccType,obj.activeType);
       }
       else
@@ -24,13 +26,14 @@ class App extends Component {
     }
   }
 
-  render() {
-
+  render()
+  {
     if(typeof this.props.branding.logo != 'undefined')
     {
       return (
         <div>
           <Tooltip />
+          <Modal />
           <div id="wrapper" className={(!this.props.leftMenu.isOpen)?"left-toggle":""}>
             <Header
               data={{
@@ -47,7 +50,7 @@ class App extends Component {
             <div className="main">
               {this.props.children}
             </div>
-            <div id="content-overlay"></div>
+            <div className="left-menu-overlay"></div>
           </div>
         </div>
       );

@@ -6,9 +6,9 @@ export default function (state = {}, action) {
     case CHANGE_AUTH:
       if(typeof(Storage))
       {
+        //console.log(action.payload);
         if(typeof action.payload.errors == "undefined")
         {
-          //console.log(1);
           sessionStorage.setItem("auth",action.payload);
         }
         else

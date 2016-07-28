@@ -6,6 +6,7 @@ import ToolTip from './tool-tip';
 import Auth from './auth';
 import CourseCounters from './course-counters';
 import Isotope from './isotope';
+import Modal from './modal';
 
 const rootReducer = combineReducers({
   "branding":Branding,
@@ -14,7 +15,8 @@ const rootReducer = combineReducers({
   "tooltip":ToolTip,
   "courseCounters":CourseCounters,
   "auth":Auth,
-  "isotope":Isotope
+  "isotope":Isotope,
+  "modal":Modal
 });
 
 export default rootReducer;

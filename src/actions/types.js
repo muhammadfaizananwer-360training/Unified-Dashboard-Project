@@ -5,3 +5,4 @@ export const TOOL_TIP = 'tool_tip';
 export const CHANGE_AUTH = 'change_auth';
 export const COURSE_COUNTERS = 'course_counters';
 export const ISOTOPE = 'isotope';
+export const MODAL = 'modal';

@@ -8,12 +8,14 @@ class Logout extends Component {
     router:React.PropTypes.object
   }
 
-  componentDidMount(){
+  componentDidMount()
+  {
     this.props.authentication(false);
     this.props.clearState("COURSE_COUNTERS");
     this.props.clearState("FETCH_BRAND");
     sessionStorage.removeItem("auth");
     sessionStorage.removeItem("userName");
+    sessionStorage.removeItem("leftMenu");
     this.context.router.push("/LS360Dashboard/login");
   }
 

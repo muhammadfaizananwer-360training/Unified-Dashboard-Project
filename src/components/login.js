@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import * as actions from '../actions';
-import InputField from './form/input-field';
+import InputField from './helper/input-field';
 
 class Login extends Component {
 

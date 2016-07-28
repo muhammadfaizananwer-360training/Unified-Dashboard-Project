@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Isotope from './isotope/content';
+import IsoContent from './isotope-content';
 var inst;
 
-class IsotopeContainer extends Component {
+class IsoContainer extends Component {
 
   constructor() {
     super();
@@ -76,9 +76,9 @@ class IsotopeContainer extends Component {
             </ul>
 					</li>
 				</ul>
-        <Isotope />
+        <IsoContent />
 			</div>
     );
   }
 }
-export default IsotopeContainer;
+export default IsoContainer;

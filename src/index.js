@@ -31,7 +31,7 @@ import Shop from './components/pages/shop';
 import Subscriptions from './components/pages/subscriptions';
 import Support from './components/pages/support';
 import Terms from './components/pages/terms';
-import NotFound from './components/errors/not-found';
+import NotFound from './components/pages/not-found';
 
 const createStoreWithMiddleware = applyMiddleware(Async)(createStore);
 
