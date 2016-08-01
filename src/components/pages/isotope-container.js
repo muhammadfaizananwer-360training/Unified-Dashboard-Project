@@ -4,8 +4,8 @@ var inst;
 
 class IsoContainer extends Component {
 
-  constructor() {
-    super();
+  componentWillMount()
+  {
     inst = this;
     this.state = {
       "menu_open":false,
@@ -13,11 +13,23 @@ class IsoContainer extends Component {
     }
   }
 
-  onClickMenu() {
+  componentDidMount()
+  {
+    document.getElementById("wrapper").addEventListener('scroll',this.handleScroll);
+  }
+
+  componentWillUnmount()
+  {
+    document.getElementById("wrapper").removeEventListener('scroll',this.handleScroll);
+  }
+
+  onClickMenu()
+  {
     this.setState({"menu_open":!this.state.menu_open});
   }
 
-  handleScroll(e) {
+  handleScroll(e)
+  {
     if(e.target.scrollTop < 200)
     {
       if(inst.state.affix)
@@ -31,14 +43,6 @@ class IsoContainer extends Component {
       //console.log(2);
       inst.setState({"affix":true});
     }
-  }
-
-  componentDidMount() {
-    document.getElementById("wrapper").addEventListener('scroll',this.handleScroll);
-  }
-
-  componentWillUnmount() {
-    document.getElementById("wrapper").removeEventListener('scroll',this.handleScroll);
   }
 
   render() {

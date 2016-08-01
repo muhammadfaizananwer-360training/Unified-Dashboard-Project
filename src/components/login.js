@@ -5,9 +5,8 @@ import InputField from './helper/input-field';
 
 class Login extends Component {
 
-  constructor(props)
+  componentWillMount()
   {
-    super(props);
     this.state = {
       "email":"",
       "pass":"",
@@ -183,10 +182,9 @@ class Login extends Component {
   }
 }
 
-function mapState(state) {
-  return {
-          auth: state.auth
-        };
+function mapState(state)
+{
+  return {auth: state.auth};
 }
 
 export default connect(mapState,actions)(Login);

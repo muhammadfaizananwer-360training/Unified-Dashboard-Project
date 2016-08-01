@@ -2,11 +2,17 @@ import React, { Component } from 'react';
 
 class InputField extends Component {
 
-  constructor(props)
+  componentWillMount()
   {
-    super(props);
-    var cond = (this.props.value.length <= 0);
-    //console.log(this.props.value);
+    var cond;
+    if(typeof this.props != "undefined")
+    {
+      cond = (this.props.value.length <= 0);
+    }
+    else
+    {
+      cond = true;
+    }
     this.state = {
       "status":(cond?"":" up"),
       "placeholder":(cond?"":this.props.placeholder)
@@ -29,7 +35,8 @@ class InputField extends Component {
     }
   }
 
-  render() {
+  render()
+  {
     return (
       <div className={"animated-input"+this.state.status}
         data-placeholder={this.state.placeholder}>

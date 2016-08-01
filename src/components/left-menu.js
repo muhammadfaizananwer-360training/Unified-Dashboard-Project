@@ -5,7 +5,8 @@ import * as actions from '../actions';
 
 class LeftMenu extends Component {
 
-  menu(data,i) {
+  menu(data,i)
+  {
       var accType;
       var collapseIn;
       if(this.props.config.activeAccType == data.type)
@@ -50,8 +51,8 @@ class LeftMenu extends Component {
             );
   }
 
-  render() {
-
+  render()
+  {
     return (
       <div className="sidebar">
         <h4 className="heading"><span>{this.props.data.label}</span></h4>
@@ -69,7 +70,8 @@ class LeftMenu extends Component {
   }
 }
 
-function mapState(state){
+function mapState(state)
+{
   return {};
 }
 

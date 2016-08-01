@@ -8,10 +8,10 @@ import Modal from './helper/modal';
 
 class App extends Component {
 
-  constructor(props)
+  componentWillMount()
   {
-    super(props);
-    if(typeof this.props.auth != "undefined"){
+    if(typeof this.props.auth != "undefined")
+    {
       this.props.fetchBrand();
       this.props.topMenuToggle(false);
       if(typeof(Storage) && typeof sessionStorage.leftMenu != "undefined")
@@ -62,12 +62,9 @@ class App extends Component {
   }
 }
 
-function mapState(state) {
-  return {
-          "branding":state.branding,
-          "topMenu":state.topMenu,
-          "leftMenu":state.leftMenu
-         };
+function mapState(state)
+{
+  return {"branding":state.branding,"topMenu":state.topMenu,"leftMenu":state.leftMenu};
 }
 
 export default connect(mapState,actions)(App);

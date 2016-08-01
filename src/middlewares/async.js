@@ -12,10 +12,12 @@ export default function({dispatch}){
 
     // M2
     action.payload
-      .then(function(response){
+      .then(function(response)
+      {
         //const newAction = {...action, payload:response.data}
         dispatch({...action, payload:response.data});
-      }).catch(function (response) {
+      }).catch(function (response)
+      {
         //const newAction = {...action, payload:response}
         console.log(response);
         dispatch({...action, payload:response.data});

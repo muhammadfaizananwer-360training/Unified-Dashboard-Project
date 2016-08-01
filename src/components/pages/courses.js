@@ -5,12 +5,12 @@ import IsotopeContainer from './isotope-container';
 
 class Courses extends Component {
 
-  constructor(props) {
-    super(props);
+  componentWillMount()
+  {
     this.props.clearState("COURSE_COUNTERS");
     this.props.courseCounters();
     this.state = {
-      "api_status":0
+      "apiStatus":0
     }
   }
 
@@ -18,13 +18,14 @@ class Courses extends Component {
   {
     if(typeof nextProps.counters.all == "number")
     {
-      this.setState({"api_status":1});
+      this.setState({"apiStatus":1});
     }
   }
 
   translateStatus()
   {
-    switch (this.state.api_status) {
+    switch (this.state.apiStatus)
+    {
       case 0:
         //  loading
         return " pre-loader";
@@ -43,9 +44,10 @@ class Courses extends Component {
   numFormation(num = 0)
   {
     return String(num).replace(/(\d)(?=(\d\d\d)+(?!\d))/g, "$1,");
-  };
+  }
 
-  render() {
+  render()
+  {
     return (
       <div>
         <h1 className="page-heading">My Courses</h1>
@@ -75,10 +77,9 @@ class Courses extends Component {
   }
 }
 
-function mapState(state) {
-  return {
-          "counters":state.courseCounters
-         };
+function mapState(state)
+{
+  return {"counters":state.courseCounters};
 }
 
 export default connect(mapState,actions)(Courses);

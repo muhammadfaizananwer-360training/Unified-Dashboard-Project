@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import {connect} from 'react-redux';
 
 class ToolTip extends Component {
-  render() {
+
+  render()
+  {
     if(this.props.tooltip.visible)
     {
       return (
@@ -23,10 +25,9 @@ class ToolTip extends Component {
   }
 }
 
-function mapState(state) {
-    return {
-          "tooltip":state.tooltip
-         };
+function mapState(state)
+{
+    return {"tooltip":state.tooltip};
 }
 
 export default connect(mapState)(ToolTip);

@@ -5,7 +5,8 @@ import * as actions from '../actions';
 
 class Header extends Component {
 
-  menu(data,i) {
+  menu(data,i)
+  {
     if(data.label == 'MENU_DIVIDER')
     {
       return (
@@ -20,7 +21,8 @@ class Header extends Component {
     }
   }
 
-  render() {
+  render()
+  {
     var logoUrl = {backgroundImage: 'url("' + this.props.data.logo.source + '")'};
     return (
         <nav className="navbar-fixed-top">
@@ -42,7 +44,8 @@ class Header extends Component {
   }
 }
 
-function mapState(state){
+function mapState(state)
+{
   return{};
 }
 

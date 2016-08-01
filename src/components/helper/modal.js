@@ -5,7 +5,7 @@ import ExternalHtml from './external-html';
 
 class Modal extends Component {
 
-  componentDidMount()
+  componentWillMount()
   {
     this.state = {
       "visible":false,
@@ -71,16 +71,18 @@ class Modal extends Component {
           <div>
             <div className="modals">
               <div className={"modal fade"+isIn} style={{"display":"block"}}>
-                <div className={"modal-dialog "+this.props.modal.size}>
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h2 className="modal-title">{this.props.modal.title}</h2>
-                      <button type="button" onClick={() => this.props.getModal({"visible":false})} className="close"></button>
+                <div className="vertical-alignment-helper">
+                  <div className={"modal-dialog vertical-align-center "+this.props.modal.size}>
+                    <div className="modal-content">
+                      <div className="modal-header">
+                        <h2 className="modal-title">{this.props.modal.title}</h2>
+                        <button type="button" onClick={() => this.props.getModal({"visible":false})} className="close"></button>
+                      </div>
+                      <div className="modal-body">
+                        {this.createBody()}
+                      </div>
+                      {this.footer(this.props.modal.footer)}
                     </div>
-                    <div className="modal-body">
-                      {this.createBody()}
-                    </div>
-                    {this.footer(this.props.modal.footer)}
                   </div>
                 </div>
               </div>
@@ -102,7 +104,8 @@ class Modal extends Component {
   }
 }
 
-function mapState(state) {
+function mapState(state)
+{
   return {"modal":state.modal};
 }
 

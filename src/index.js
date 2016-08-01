@@ -1,7 +1,7 @@
 //  App Core Libraries
 import React from 'react';
 import ReactDOM from 'react-dom';
-import "babel-polyfill"
+import "babel-polyfill";
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware } from 'redux';
 import { Router, Route, browserHistory } from 'react-router';

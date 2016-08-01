@@ -1,6 +1,8 @@
 import { renderComponent , expect } from '../test_helper';
 import Login from '../../src/components/login';
-import * as actions from '../../src/actions'
+import {CHANGE_AUTH} from '../../src/actions/types';
+import {authentication} from '../../src/actions';
+import authReducer from '../../src/reducers/auth';
 
 describe('Login Component', () => {
   let component;
@@ -9,7 +11,7 @@ describe('Login Component', () => {
     component = renderComponent(Login);
   });
 
-  describe('Render Tests', () => {
+  describe('Rendering elements', () => {
 
     it('Has correct heading', () => {
       expect(component.find('h2')).to.have.contain('Sign In To 360training.com');
@@ -30,27 +32,47 @@ describe('Login Component', () => {
     });
   });
 
-  describe('Actions Tests', () => {
+  describe('Actions', () => {
 
-    describe('Authentication', () => {
-      it('if valid user', () => {
-        const expectedAction = {
-          type:'change_auth',
-          payload:'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE2LTA2LTI5VDAyOjE4OjQ0LjIzMiIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9MRUFSTkVSIiwiUk9MRV9UUkFJTklOR0FETUlOSVNUUkFUT1IiLCJST0xFX0lOU1RSVUNUT1IiLCJST0xFX1JFR1VMQVRPUllBTkFMWVNUIiwiUk9MRV9MTVNBRE1JTklTVFJBVE9SIl0sImNsaWVudF9pZCI6IlRlc3RDbGllbnQiLCJzY29wZSI6WyJSRUFEIiwiVFJVU1QiLCJXUklURSJdfQ.QMxYwULpVR2rAMYjqtR3AvPpg_4LhZdjgp80juFwOAk'
-        };
+    describe('authentication', () => {
 
-        expect(actions.authentication(true,"Noman.Liaquat@360training.com","a12345678")).to.contain(expectedAction);
+      it('Has the correct type', () => {
+        const action = authentication(true);
+        expect(action.type).to.equal(CHANGE_AUTH);
       });
 
-      it('if invalid user', () => {
-        const expectedAction = {
-          type:'change_auth',
-          payload:false
-        };
-
-        expect(actions.authentication(false,"Noman.Liaquat@360training.com","asd")).to.contain(expectedAction);
-      });
     });
 
   });
+
+  describe('Reducers', () => {
+
+    describe('authentication', () => {
+
+      it('handles action with unknown type', () => {
+        expect(authReducer(undefined,{})).to.eql({});
+      });
+
+      it('handles action of type CHANGE_AUTH', () => {
+        const action = {type:CHANGE_AUTH,payload:"faketoken"}
+        expect(authReducer({},action)).to.eql("faketoken");
+      });
+
+    });
+
+    describe('authentication', () => {
+
+      it('handles action with unknown type', () => {
+        expect(authReducer(undefined,{})).to.eql({});
+      });
+
+      it('handles action of type CHANGE_AUTH', () => {
+        const action = {type:CHANGE_AUTH,payload:"faketoken"}
+        expect(authReducer({},action)).to.eql("faketoken");
+      });
+
+    });
+
+  });
+
 });

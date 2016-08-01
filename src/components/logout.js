@@ -8,7 +8,7 @@ class Logout extends Component {
     router:React.PropTypes.object
   }
 
-  componentDidMount()
+  componentWillMount()
   {
     this.props.authentication(false);
     this.props.clearState("COURSE_COUNTERS");
@@ -19,14 +19,16 @@ class Logout extends Component {
     this.context.router.push("/LS360Dashboard/login");
   }
 
-  render() {
+  render()
+  {
     return (
       <div></div>
     );
   }
 }
 
-function mapState(state) {
+function mapState(state)
+{
   return {};
 }
 

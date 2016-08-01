@@ -27,9 +27,9 @@ export function authentication(isLogin,userName="",pass=""){
   			"password": pass
       }
     };
-    //token = axios.get(server+"/LS360Dashboard/token/get",config);
+    token = axios.get(server+"/LS360Dashboard/token/get",config);
     //token = axios.get("/LS360Dashboard/token/get",config);
-    token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE2LTA2LTI5VDAyOjE4OjQ0LjIzMiIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9MRUFSTkVSIiwiUk9MRV9UUkFJTklOR0FETUlOSVNUUkFUT1IiLCJST0xFX0lOU1RSVUNUT1IiLCJST0xFX1JFR1VMQVRPUllBTkFMWVNUIiwiUk9MRV9MTVNBRE1JTklTVFJBVE9SIl0sImNsaWVudF9pZCI6IlRlc3RDbGllbnQiLCJzY29wZSI6WyJSRUFEIiwiVFJVU1QiLCJXUklURSJdfQ.QMxYwULpVR2rAMYjqtR3AvPpg_4LhZdjgp80juFwOAk";
+    //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE2LTA2LTI5VDAyOjE4OjQ0LjIzMiIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9MRUFSTkVSIiwiUk9MRV9UUkFJTklOR0FETUlOSVNUUkFUT1IiLCJST0xFX0lOU1RSVUNUT1IiLCJST0xFX1JFR1VMQVRPUllBTkFMWVNUIiwiUk9MRV9MTVNBRE1JTklTVFJBVE9SIl0sImNsaWVudF9pZCI6IlRlc3RDbGllbnQiLCJzY29wZSI6WyJSRUFEIiwiVFJVU1QiLCJXUklURSJdfQ.QMxYwULpVR2rAMYjqtR3AvPpg_4LhZdjgp80juFwOAk";
     sessionStorage.setItem("userName",userName);
   }
 
@@ -52,11 +52,11 @@ export function fetchBrand(){
     }
   };
 
-  /*const request = axios.post(server+"/LS360ApiGateway/services/rest/brand",JSON.stringify({
+  const request = axios.post(server+"/LS360ApiGateway/services/rest/brand",JSON.stringify({
     "username":sessionStorage.userName
-  }),config);*/
+  }),config);
 
-  const request = {
+  const request2 = {
     logo:{
       label:"360training",
       source:"../assets/img/logo.svg",
@@ -178,14 +178,14 @@ export function courseCounters(){
       access_token : sessionStorage.auth
     }
   };
-  /*const request = axios.post(server+"/LS360ApiGateway/services/rest/lms/customer/learner/course/count",JSON.stringify({
+  const request = axios.post(server+"/LS360ApiGateway/services/rest/lms/customer/learner/course/count",JSON.stringify({
     "userName": sessionStorage.userName,
     "countType": [
       "all","subscriptions","completed","inProgress","notstarted"
     ]
-  }),config);*/
+  }),config);
 
-  const request = {
+  const request2 = {
          "all": 5,
          "notstarted": 3,
          "subscriptions": 1585,
@@ -212,16 +212,18 @@ export function getIsotope(){
     }
   };
 
-  /*const request = axios.post(server+"/LS360ApiGateway/services/rest/lms/customer/learner/courses",JSON.stringify({
+  const request = axios.post(server+"/LS360ApiGateway/services/rest/lms/customer/learner/courses",JSON.stringify({
     "userName":sessionStorage.userName
-  }),config);*/
+  }),config);
 
-  const request = [
+  //const request = [];
+
+  const request2 = [
         {"courseSubType": "Self Paced Course",
-        "startDate": "2016-06-28T23:59:59",
+        "startDate": "2016-07-28T23:59:59",
         "viewAssessmentURI": "#",
         "enrollmentId": 123456,
-        "expiryDate": "2016-07-30T23:59:59",
+        "expiryDate": "2016-08-10T23:59:59",
         "certificateURI": "#",
         "timeSpent": "1H 24M",
         "courseImage": "",
@@ -464,9 +466,10 @@ export function getIsotope(){
   };
 }
 
-export function clearState(expression){
-
-  switch (expression) {
+export function clearState(expression)
+{
+  switch (expression)
+  {
     case "ISOTOPE":
       return{
         type:ISOTOPE,

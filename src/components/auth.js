@@ -2,7 +2,8 @@ import React, {Component} from 'react';
 import {connect} from 'react-redux';
 
 export default (Composition) => {
-  class Auth extends Component{
+
+  class Auth extends Component {
 
     static contextTypes = {
       router:React.PropTypes.object
@@ -24,12 +25,14 @@ export default (Composition) => {
       }
     }*/
 
-    render(){
+    render()
+    {
       return <Composition {...this.props}/>;
-    };
+    }
   }
 
-  function mapState(state){
+  function mapState(state)
+  {
     return {auth: sessionStorage.auth}; //state.auth};
   }
 
