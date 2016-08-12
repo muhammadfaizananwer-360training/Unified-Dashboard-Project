@@ -1,6 +1,4 @@
 import React, { Component } from 'react';
-import {connect} from 'react-redux';
-import * as actions from '../actions';
 
 class Logout extends Component {
 
@@ -10,9 +8,9 @@ class Logout extends Component {
 
   componentWillMount()
   {
-    this.props.authentication(false);
-    this.props.clearState("COURSE_COUNTERS");
-    this.props.clearState("FETCH_BRAND");
+    //this.props.authentication(false);
+    //this.props.clearState("COURSE_COUNTERS");
+    //this.props.clearState("FETCH_BRAND");
     sessionStorage.removeItem("auth");
     sessionStorage.removeItem("userName");
     sessionStorage.removeItem("leftMenu");
@@ -27,9 +25,4 @@ class Logout extends Component {
   }
 }
 
-function mapState(state)
-{
-  return {};
-}
-
-export default connect (mapState,actions)(Logout);
+export default Logout;

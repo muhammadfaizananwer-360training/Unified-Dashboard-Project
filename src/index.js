@@ -13,6 +13,7 @@ import RequireAuth from './components/auth';
 import App from './components/app';
 import Login from './components/login';
 import Logout from './components/logout';
+import Token from './components/token';
 
 //  App Inner Components
 import AccountInfo from './components/pages/account-info';
@@ -40,6 +41,7 @@ ReactDOM.render(
       <Router history={browserHistory}>
         <Route path='/'>
             <Route path='LS360Dashboard'>
+              <Route path='token' component={Token} />
               <Route path='login' component={Login} />
               <Route component={RequireAuth(App)}>
                 <Route path='account-info' component={AccountInfo} />

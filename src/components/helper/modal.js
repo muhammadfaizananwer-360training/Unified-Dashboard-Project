@@ -37,14 +37,18 @@ class Modal extends Component {
   {
     if(typeof this.props.modal.body != "undefined")
     {
-      if(typeof this.props.modal.body.src == "undefined")
-      {
-        return <div dangerouslySetInnerHTML={{__html: this.props.modal.body}} />;
-      }
-      else
-      {
-        return <ExternalHtml iframe='iframe' src={this.props.modal.body.src} />;
-      }
+        if(typeof this.props.modal.body == "object")
+        {
+          return <div>{this.props.modal.body}</div>;
+        }
+        else if(typeof this.props.modal.body == "string")
+        {
+          return <div dangerouslySetInnerHTML={{__html: this.props.modal.body}} />;
+        }
+    }
+    else if(typeof this.props.modal.src != "undefined")
+    {
+        return <ExternalHtml iframe='iframe' src={this.props.modal.src} />;
     }
   }
 

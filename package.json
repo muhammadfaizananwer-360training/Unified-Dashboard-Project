@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js",
-    "build": "node ./node_modules/webpack/bin/webpack.js && uglifyjs ./assets/scripts/bundle.js -c -m -o ./assets/scripts/bundle.min.js -p --define process.env.NODE_ENV='\"production\"'",
+    "build": "node ./node_modules/webpack/bin/webpack.js && uglifyjs ./assets/scripts/bundle.js -c -m -o ./assets/scripts/bundle.js",
     "test": "mocha --compilers js:babel-core/register --require ./test/test_helper.js --recursive ./test",
     "test:watch": "npm run test -- --watch"
   },

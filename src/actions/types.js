@@ -6,3 +6,5 @@ export const CHANGE_AUTH = 'change_auth';
 export const COURSE_COUNTERS = 'course_counters';
 export const ISOTOPE = 'isotope';
 export const MODAL = 'modal';
+export const COURSE_DETAIL = 'course_detail';
+export const TOKEN_VERIFICATION = 'token_verification';

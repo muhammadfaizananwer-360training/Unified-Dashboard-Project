@@ -5,7 +5,7 @@ class ExternalHtml extends Component {
     render()
     {
       var Iframe=this.props.iframe;
-      return <Iframe src={this.props.src} height={this.props.height} width={this.props.width}/>;
+      return <Iframe src={this.props.src} height="100%" width="100%"/>;
     }
 }
 

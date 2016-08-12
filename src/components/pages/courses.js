@@ -7,11 +7,15 @@ class Courses extends Component {
 
   componentWillMount()
   {
-    this.props.clearState("COURSE_COUNTERS");
     this.props.courseCounters();
     this.state = {
       "apiStatus":0
     }
+  }
+
+  componentWillUnmount()
+  {
+    this.props.clearState("COURSE_COUNTERS");
   }
 
   componentWillReceiveProps(nextProps)

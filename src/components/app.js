@@ -10,7 +10,8 @@ class App extends Component {
 
   componentWillMount()
   {
-    if(typeof this.props.auth != "undefined")
+    //console.log(this.props.auth);
+    if(typeof this.props.auth != "undefined" && this.props.auth != false && this.props.auth != "false")
     {
       this.props.fetchBrand();
       this.props.topMenuToggle(false);
@@ -24,6 +25,12 @@ class App extends Component {
         this.props.leftMenuToggle(true);
       }
     }
+  }
+
+  componentWillUnmount()
+  {
+    this.props.authentication(false);
+    this.props.clearState("FETCH_BRAND");
   }
 
   render()

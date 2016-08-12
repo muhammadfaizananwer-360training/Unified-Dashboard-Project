@@ -7,6 +7,8 @@ import Auth from './auth';
 import CourseCounters from './course-counters';
 import Isotope from './isotope';
 import Modal from './modal';
+import CourseDetail from './course-detail';
+import TokenVerification from './token-verification';
 
 const rootReducer = combineReducers({
   "branding":Branding,
@@ -16,7 +18,9 @@ const rootReducer = combineReducers({
   "courseCounters":CourseCounters,
   "auth":Auth,
   "isotope":Isotope,
-  "modal":Modal
+  "modal":Modal,
+  "courseDetail":CourseDetail,
+  "tokenVerification":TokenVerification
 });
 
 export default rootReducer;

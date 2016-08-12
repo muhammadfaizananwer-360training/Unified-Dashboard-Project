@@ -11,7 +11,7 @@ export default (Composition) => {
 
     componentWillMount()
     {
-      if(this.props.auth == false || typeof this.props.auth == "undefined")
+      if(typeof this.props.auth == "undefined" || this.props.auth == false || this.props.auth == "false")
       {
         this.context.router.push('/LS360Dashboard/login');
       }

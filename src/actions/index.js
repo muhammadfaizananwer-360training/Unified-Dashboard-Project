@@ -7,14 +7,18 @@ import {
   COURSE_COUNTERS,
   CHANGE_AUTH,
   ISOTOPE,
-  MODAL
+  MODAL,
+  COURSE_DETAIL,
+  TOKEN_VERIFICATION
 } from './types';
 
-var server = 'http://10.0.215.78:8080'; //QA
-//var server = 'http://10.0.100.97:8080'; //DEV Noman
+var apiServer = 'http://10.0.215.78:8080'; //QA
+//var apiServer = 'http://10.0.100.97:8080'; //DEV Noman
+//var apiServer = 'http://10.0.100.94:8080'; // DEV Irfan
+var appServer = apiServer;//'http://localhost:8081';
 
-export function authentication(isLogin,userName="",pass=""){
-
+export function authentication(isLogin,userName="",pass="")
+{
   var token = false;
   if(isLogin)
   {
@@ -27,8 +31,7 @@ export function authentication(isLogin,userName="",pass=""){
   			"password": pass
       }
     };
-    token = axios.get(server+"/LS360Dashboard/token/get",config);
-    //token = axios.get("/LS360Dashboard/token/get",config);
+    token = axios.get(appServer+"/LS360Dashboard/token/get",config);
     //token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOiIyMDE2LTA2LTI5VDAyOjE4OjQ0LjIzMiIsInVzZXJfbmFtZSI6ImFkbWluIiwiYXV0aG9yaXRpZXMiOlsiUk9MRV9MRUFSTkVSIiwiUk9MRV9UUkFJTklOR0FETUlOSVNUUkFUT1IiLCJST0xFX0lOU1RSVUNUT1IiLCJST0xFX1JFR1VMQVRPUllBTkFMWVNUIiwiUk9MRV9MTVNBRE1JTklTVFJBVE9SIl0sImNsaWVudF9pZCI6IlRlc3RDbGllbnQiLCJzY29wZSI6WyJSRUFEIiwiVFJVU1QiLCJXUklURSJdfQ.QMxYwULpVR2rAMYjqtR3AvPpg_4LhZdjgp80juFwOAk";
     sessionStorage.setItem("userName",userName);
   }
@@ -39,8 +42,8 @@ export function authentication(isLogin,userName="",pass=""){
   };
 }
 
-export function fetchBrand(){
-
+export function fetchBrand()
+{
   var config = {
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -52,7 +55,7 @@ export function fetchBrand(){
     }
   };
 
-  const request = axios.post(server+"/LS360ApiGateway/services/rest/brand",JSON.stringify({
+  const request = axios.post(apiServer+"/LS360ApiGateway/services/rest/brand",JSON.stringify({
     "username":sessionStorage.userName
   }),config);
 
@@ -134,7 +137,8 @@ export function fetchBrand(){
   };
 }
 
-export function leftMenuToggle(isOpen,activeAccType="", activeType=""){
+export function leftMenuToggle(isOpen,activeAccType="", activeType="")
+{
   return{
     type:LEFT_MENU,
     payload:{
@@ -145,7 +149,8 @@ export function leftMenuToggle(isOpen,activeAccType="", activeType=""){
   };
 }
 
-export function topMenuToggle(isOpen){
+export function topMenuToggle(isOpen)
+{
   return{
     type:TOP_MENU,
     payload:{
@@ -154,7 +159,8 @@ export function topMenuToggle(isOpen){
   }
 }
 
-export function tooltip(visible,pos='default',css={},content=''){
+export function tooltip(visible,pos='default',css={},content='')
+{
   return{
     type:TOOL_TIP,
     payload:{
@@ -166,7 +172,8 @@ export function tooltip(visible,pos='default',css={},content=''){
   }
 }
 
-export function courseCounters(){
+export function courseCounters()
+{
 
   var config = {
     headers: {
@@ -178,7 +185,7 @@ export function courseCounters(){
       access_token : sessionStorage.auth
     }
   };
-  const request = axios.post(server+"/LS360ApiGateway/services/rest/lms/customer/learner/course/count",JSON.stringify({
+  const request = axios.post(apiServer+"/LS360ApiGateway/services/rest/lms/customer/learner/course/count",JSON.stringify({
     "userName": sessionStorage.userName,
     "countType": [
       "all","subscriptions","completed","inProgress","notstarted"
@@ -199,8 +206,8 @@ export function courseCounters(){
   }
 }
 
-export function getIsotope(){
-
+export function getIsotope()
+{
   var config = {
     headers: {
       'Access-Control-Allow-Origin': '*',
@@ -212,17 +219,15 @@ export function getIsotope(){
     }
   };
 
-  const request = axios.post(server+"/LS360ApiGateway/services/rest/lms/customer/learner/courses",JSON.stringify({
+  const request = axios.post(apiServer+"/LS360ApiGateway/services/rest/lms/customer/learner/courses",JSON.stringify({
     "userName":sessionStorage.userName
   }),config);
-
-  //const request = [];
 
   const request2 = [
         {"courseSubType": "Self Paced Course",
         "startDate": "2016-07-28T23:59:59",
         "viewAssessmentURI": "#",
-        "enrollmentId": 123456,
+        "enrollmentId": 5618,
         "expiryDate": "2016-08-10T23:59:59",
         "certificateURI": "#",
         "timeSpent": "1H 24M",
@@ -231,7 +236,7 @@ export function getIsotope(){
         "isExpired": false,
         "courseGUID": "2a8cacb1b6e3455caf8ca9e9d19ce9ee",
         "courseProgress": 10,
-        "courseStatus": "inprogress",
+        "courseStatus": "completed",
         "launchURI": "#",
         "subscriptionTag": "#",
         "courseType": "Online Course",
@@ -382,7 +387,7 @@ export function getIsotope(){
         "courseSubType": "Self Paced Course",
         "startDate": "2016-06-28T02:49:35.77",
         "viewAssessmentURI": "#",
-        "enrollmentId": 123456,
+        "enrollmentId": 5618,
         "expiryDate": "2016-06-28T02:49:35.77",
         "certificateURI": "#",
         "timeSpent": "1H 24M",
@@ -402,7 +407,7 @@ export function getIsotope(){
         "courseSubType": "Self Paced Course",
         "startDate": "2016-06-28T02:49:35.77",
         "viewAssessmentURI": "#",
-        "enrollmentId": 123456,
+        "enrollmentId": 5618,
         "expiryDate": "2016-06-28T02:49:35.77",
         "certificateURI": "#",
         "timeSpent": "1H 24M",
@@ -422,7 +427,7 @@ export function getIsotope(){
         "courseSubType": "Self Paced Course",
         "startDate": "2016-06-28T02:49:35.77",
         "viewAssessmentURI": "#",
-        "enrollmentId": 123456,
+        "enrollmentId": 5618,
         "expiryDate": "2016-06-28T02:49:35.77",
         "certificateURI": "#",
         "timeSpent": "1H 24M",
@@ -442,7 +447,7 @@ export function getIsotope(){
         "courseSubType": "Self Paced Course",
         "startDate": "2016-06-28T02:49:35.77",
         "viewAssessmentURI": "#",
-        "enrollmentId": 123456,
+        "enrollmentId": 5618,
         "expiryDate": "2016-06-28T02:49:35.77",
         "certificateURI": "#",
         "timeSpent": "1H 24M",
@@ -488,12 +493,90 @@ export function clearState(expression)
         payload:{}
       };
       break;
+    case "COURSE_DETAIL":
+      return{
+        type:COURSE_DETAIL,
+        payload:[]
+      };
+      break;
   }
 }
 
-export function getModal(obj={"visible":false}){
+export function getModal(obj={"visible":false})
+{
   return{
     type:MODAL,
     payload:obj
+  };
+}
+
+export function getCourseDetail(eId)
+{
+
+  var config = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+      'Authorization': "bearer "+sessionStorage.auth
+    },
+    params:{
+      access_token : sessionStorage.auth
+    }
+  };
+
+  const request = axios.post(apiServer+"/LS360ApiGateway/services/rest/lms/learner/courses/statistics/byEnrollmentId",JSON.stringify({
+    "enrollmentId" : [eId]
+  }),config);
+
+  const request2 = [{
+      "firstAccessDate": "2015-02-20T19:08:55.57",
+      "lastAccessDate": "2015-02-20T19:25:41.277",
+      "launchesOccrued": 5,
+      "preTestDate": null,
+      "pretestScore": -1,
+      "completed": true,
+      "status": "Reported",
+      "completionDate": "2015-02-20T19:28:08.137",
+      "percentComplete": 100,
+      "lowestPostTestScore": 75,
+      "averagePostTestScore": 75,
+      "highestPostTestScore": 75,
+      "firstPostTestDate": "2015-02-20T19:22:51.993",
+      "lastPostTestDate": "2015-02-20T19:22:51.993",
+      "numberPostTestsTaken": 1,
+      "lowestQuizScore": -1,
+      "averageQuizScore": 0,
+      "highestQuizScore": 0,
+      "numberQuizesTaken": 0,
+      "firstQuizDate": null,
+      "lastQuizDate": null,
+      "totalTimeInSeconds": 2465,
+      "certificateNumber": "OSHA-000632",
+      "certificateIssuedDate": "2015-02-20T19:28:08.337",
+      "learnerEnrollmentId": 247835
+    }];
+
+  return{
+    type:COURSE_DETAIL,
+    payload:request
+  };
+}
+
+export function tokenVerify(token)
+{
+  var config = {
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+      'Authorization': "Bearer "+token,
+      "Accept":"application/json"
+    }
+  };
+
+  const request = axios.get(apiServer+"/LS360ApiGateway/services/rest/jwt/validate",config);
+
+  return{
+    type:TOKEN_VERIFICATION,
+    payload:request
   };
 }

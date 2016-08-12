@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import ReactDOM from 'react-dom';
+//import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import * as actions from '../../actions';
+import CourseDetail from './course-detail';
 
 class IsoContent extends Component {
 
@@ -12,24 +13,28 @@ class IsoContent extends Component {
 
     componentWillMount()
     {
-      this.props.clearState("ISOTOPE");
       this.props.getIsotope();
       this.state = {
         "isLoading":true,
-        "isFirstTime":true,
+        //"isFirstTime":true,
         "list":[]
       }
+    }
+
+    componentWillUnmount()
+    {
+      this.props.clearState("ISOTOPE");
     }
 
     componentWillReceiveProps(nextProps)
     {
       this.setState({"list": this.state.list.concat(nextProps.isotope)});
 
-      if(!this.state.isFirstTime)
+      //if(!this.state.isFirstTime)
       {
         this.setState({"isLoading":false});
       }
-      this.setState({"isFirstTime":false});
+      //this.setState({"isFirstTime":false});
     }
 
     checkAPIStatus()
@@ -48,23 +53,27 @@ class IsoContent extends Component {
 
     image(data)
     {
-      var path = data.courseImage;
-      if(path == "" || path == "null" || path == null)
+      var img = data.courseImage;
+      if(img == "" || img == "null" || img == null)
       {
         switch(data.courseType)
         {
           case "Online Course":
-            path = "../assets/img/default-online.jpg";
+            img = "online";
           break;
           case "Classroom Course":
-            path = "../assets/img/default-classroom.jpg";
+            img = "classroom";
           break;
           case "Webinar Course":
-            path = "../assets/img/default-webinar.jpg";
+            img = "webinar";
           break;
         }
+        return <div className={"iso-image " +img}></div>
       }
-      return <div className="iso-image" style={{backgroundImage: 'url('+path+')'}}></div>
+      else
+      {
+        return <div className="iso-image" style={{backgroundImage: 'url('+img+')'}}></div>
+      }
     }
 
     dateConverion(stamp,withTime)
@@ -99,6 +108,24 @@ class IsoContent extends Component {
       switch(data.courseType)
       {
         case "Online Course":
+
+          //  Locked
+          if(data.isLocked)
+          {
+            return (
+              <a onClick={() => this.props.getModal({
+                  "visible":true,
+                  "title":"Your Course Is Locked",
+                  "body":"<div class='left-icon locked'>This course is locked. Courses are generally locked due to too many attempts to pass an exam or quiz, or an action in regulated courses such as exiting the screen while playing the course. For assistance with locked courses, please see our <a href='#' class='u-anchor' target='_blank'>support forum</a> to contact technical support.</div>",
+                  "size":"modal-md"
+                })}
+                href="javascript:;"
+                title="Your Course Is Locked"
+                className="iso-main-btn locked"></a>
+            );
+          }
+
+          //  Expire
           if(data.isExpired)
           {
             return (
@@ -111,6 +138,14 @@ class IsoContent extends Component {
               href="javascript:;"
               title="This Course Has Expired"
               className="iso-main-btn expired"></a>
+            );
+          }
+
+          //  Launch Course
+          if(!data.isExpired && !data.isLocked && (data.courseStatus == "inprogress" || data.courseStatus == "notstarted"))
+          {
+            return (
+              <a href="javascript:;" title="Course Launch" className="iso-main-btn play"></a>
             );
           }
         break;
@@ -136,7 +171,7 @@ class IsoContent extends Component {
 
     progressBar(data)
     {
-      if(data.isExpired)
+      if(data.isExpired || data.isLocked)
       {
         return <div className="iso-progress-bar"><span style={{width:100*1.8}}></span></div>
       }
@@ -149,7 +184,7 @@ class IsoContent extends Component {
 
     timeSpent(data)
     {
-      if(data.courseStatus != "completed" && !data.isExpired)
+      if(data.courseStatus != "completed" && !data.isExpired && !data.isLocked)
       {
         return <div className="iso-time-take">{data.timeSpent}</div>
       }
@@ -160,6 +195,10 @@ class IsoContent extends Component {
       switch(data.courseType)
       {
         case "Online Course":
+          if(data.isLocked)
+          {
+            return <div className="iso-status">Locked</div>
+          }
           if(data.isExpired)
           {
             return <div className="iso-status">{"Expired "+this.dateConverion(data.expiryDate,false)}</div>
@@ -198,48 +237,79 @@ class IsoContent extends Component {
 
     bottomBtns(data)
     {
+      var btns = [];
       switch(data.courseType)
       {
         case "Online Course":
-          if(data.isExpired)
+
+          //  Launch Course
+          if(!data.isExpired && !data.isLocked && (data.courseStatus == "inprogress" || data.courseStatus == "notstarted"))
           {
-            return (
-              <div className="iso-bottom-options">
-                <div className="iso-icons">
-                  <a className="info-icon" href="javascript:void(0);">info</a>
-                </div>
-              </div>
-            );
+            btns.push(<a key="1" className="play-icon" title="Course Launch" href="javascript:void(0);">play</a>);
           }
-          else if(data.isExpireSoon)
+
+          // Course Details
+          if(!data.isLocked)
           {
-            return (
-              <div className="iso-bottom-options">
-                <div className="iso-icons">
-                  <a className="play-icon" href="javascript:void(0);">play</a>
-                  <a className="info-icon" href="javascript:void(0);">info</a>
-                  <a className="expire-soon-icon pull-right" href="javascript:void(0);" title="This Course Is Expiring"
-                  onClick={() => this.props.getModal({
-                      "visible":true,
-                      "title":"This Course Is Expiring",
-                      "body":"<div class='left-icon expire-soon'>Please note that this course will be expiring on <span class='text-red'>"+this.dateConverion(data.expiryDate,true)+"</span>. In order to have full access and pass this course, you must finish it before it expires. Expired courses prior to completion means you will have to re-enroll.</div>",
-                      "size":"modal-md"
-                    })}>expire soon</a>
-                </div>
-              </div>
-            );
+            btns.push(<a key="2" className="info-icon" href="javascript:void(0);" title="Course Details"
+                      onClick={() => this.props.getModal({
+                        "visible":true,
+                        "title":"About Your Course",
+                        "body":<CourseDetail eId={data.enrollmentId}/>,
+                        "size":"modal-md"
+                      })}>info</a>);
           }
-          else
+
+          //  Expire Soon
+          if(data.isExpireSoon)
           {
-            return (
-              <div className="iso-bottom-options">
-                <div className="iso-icons">
-                  <a className="play-icon" href="javascript:void(0);">play</a>
-                  <a className="info-icon" href="javascript:void(0);">info</a>
-                </div>
-              </div>
-            );
+            btns.push(<a key="3" className="expire-soon-icon pull-right" href="javascript:void(0);" title="This Course Is Expiring"
+                      onClick={() => this.props.getModal({
+                          "visible":true,
+                          "title":"This Course Is Expiring",
+                          "body":"<div class='left-icon expire-soon'>Please note that this course will be expiring on <span class='text-red'>"+this.dateConverion(data.expiryDate,true)+"</span>. In order to have full access and pass this course, you must finish it before it expires. Expired courses prior to completion means you will have to re-enroll.</div>",
+                          "size":"modal-md"
+                        })}>expire soon</a>);
           }
+
+          //  View Assessment
+          if(data.viewAssessmentURI != "" && !data.isLocked)
+          {
+            btns.push(<a key="4" className="view-assessment-icon" href="javascript:void(0);" title="View Assessment"
+                    onClick={() => this.props.getModal({
+                        "visible":true,
+                        "title":"View Assessment",
+                        "src":data.viewAssessmentURI,
+                        "size":"modal-md"
+                      })}>view</a>);
+          }
+
+          //  Locked
+          if(data.isLocked)
+          {
+            btns.push(<a key="5" className="locked-icon" href="javascript:void(0);" title="Your Course Is Locked"
+                      onClick={() => this.props.getModal({
+                          "visible":true,
+                          "title":"Your Course Is Locked",
+                          "body":"<div class='left-icon locked'>This course is locked. Courses are generally locked due to too many attempts to pass an exam or quiz, or an action in regulated courses such as exiting the screen while playing the course. For assistance with locked courses, please see our <a href='#' class='u-anchor' target='_blank'>support forum</a> to contact technical support.</div>",
+                          "size":"modal-md"
+                        })}>locked</a>);
+          }
+
+          //  Certificate
+          if(data.certificateURI != "" && data.certificateURI != null && data.courseStatus == "completed")
+          {
+            btns.push(<a key="6" className="certificate-icon pull-right" href={data.certificateURI} target="_blank" title="Certificate">certificate</a>);
+          }
+
+          return (
+            <div className="iso-bottom-options">
+              <div className="iso-icons">
+                {btns}
+              </div>
+            </div>
+          );
+
         break;
         case "Classroom Course":
           return (
@@ -298,19 +368,36 @@ class IsoContent extends Component {
 
     isExpiredOrSoon(currentDate,expDate)
     {
-      //currentDate = "2016-07-11";
-      //expDate = "2016-07-22";
+      //currentDate = "2016-08-11T23:59:59";
       var oneDay = 24*60*60*1000; // hours*minutes*seconds*milliseconds
       currentDate = new Date(currentDate);
       expDate = new Date(expDate);
       var diffDays = Math.round((currentDate.getTime() - expDate.getTime())/oneDay);
-      //console.log(diffDays, diffDays >= -10, diffDays >= 0);
-      return [diffDays >= 0,diffDays >= -10];
+      var arr = [diffDays > 0,diffDays > -10]; // expired, soon
+      if(arr[0])
+      {
+        arr[1] = false;
+      }
+      //console.log(diffDays, arr);
+      return arr;
     }
 
     box(data,i)
     {
-      var cData = this.isExpiredOrSoon(this.props.currentDate,data.expiryDate);
+      //  For Testing
+      //data.viewAssessmentURI = "https://player.360training.com/ICP4/ViewAssessmentResult.aspx?enrollmentId=10119745";
+      //data.enrollmentId = 10119745;
+      //data.isLocked = true;
+      //data.courseProgress = 10;
+      //data.certificateURI = "http://www.360training.com";
+      //data.expiryDate = "2016-08-22T23:59:59";
+      //console.log(data);
+
+      var cData = [false,false];
+      if(!data.isLocked && (data.courseStatus == "notstarted" || data.courseStatus == "inprogress"))
+      {
+        cData = this.isExpiredOrSoon(this.props.currentDate,data.expiryDate);
+      }
       data.isExpired = cData[0];
       data.isExpireSoon = cData[1];
 

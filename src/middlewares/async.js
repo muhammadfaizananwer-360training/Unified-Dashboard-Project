@@ -19,7 +19,7 @@ export default function({dispatch}){
       }).catch(function (response)
       {
         //const newAction = {...action, payload:response}
-        console.log(response);
+        //console.log(response);
         dispatch({...action, payload:response.data});
      });
 
