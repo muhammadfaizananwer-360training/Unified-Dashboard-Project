@@ -1,7 +1,4 @@
 import React, { Component } from 'react';
-//import ReactDOM from 'react-dom';
-import {connect} from 'react-redux';
-import * as actions from '../../actions';
 import CourseDetail from './course-detail';
 
 class IsoContent extends Component {
@@ -11,35 +8,9 @@ class IsoContent extends Component {
       ui.isoTope.init();
     }
 
-    componentWillMount()
-    {
-      this.props.getIsotope();
-      this.state = {
-        "isLoading":true,
-        //"isFirstTime":true,
-        "list":[]
-      }
-    }
-
-    componentWillUnmount()
-    {
-      this.props.clearState("ISOTOPE");
-    }
-
-    componentWillReceiveProps(nextProps)
-    {
-      this.setState({"list": this.state.list.concat(nextProps.isotope)});
-
-      //if(!this.state.isFirstTime)
-      {
-        this.setState({"isLoading":false});
-      }
-      //this.setState({"isFirstTime":false});
-    }
-
     checkAPIStatus()
     {
-      if (!this.state.isLoading)
+      if (!this.props.isLoading)
       {
         //  success
         return "";
@@ -141,13 +112,25 @@ class IsoContent extends Component {
             );
           }
 
-          //  Launch Course
-          if(!data.isExpired && !data.isLocked && (data.courseStatus == "inprogress" || data.courseStatus == "notstarted"))
+          //  Course Launch
+          if(!data.isExpired && !data.isLocked)
           {
-            return (
-              <a href="javascript:;" title="Course Launch" className="iso-main-btn play"></a>
-            );
+            if(data.courseStatus == "completed")
+            {
+              //  Retake Course
+              return (
+                <a href="javascript:;" title="Retake This Course" className="iso-main-btn retake"></a>
+              );
+            }
+            else if(data.courseStatus == "inprogress" || data.courseStatus == "notstarted")
+            {
+              //  launch
+              return (
+                <a href="javascript:;" title="Course Launch" className="iso-main-btn play"></a>
+              );
+            }
           }
+
         break;
         case "Classroom Course":
 
@@ -242,10 +225,19 @@ class IsoContent extends Component {
       {
         case "Online Course":
 
-          //  Launch Course
-          if(!data.isExpired && !data.isLocked && (data.courseStatus == "inprogress" || data.courseStatus == "notstarted"))
+          //  Course Launch
+          if(!data.isExpired && !data.isLocked)
           {
-            btns.push(<a key="1" className="play-icon" title="Course Launch" href="javascript:void(0);">play</a>);
+            if((data.courseStatus == "inprogress" || data.courseStatus == "notstarted"))
+            {
+              //  Launch
+              btns.push(<a key="1" className="play-icon" title="Course Launch" href="javascript:void(0);">play</a>);
+            }
+            else if(data.courseStatus == "completed")
+            {
+              //  Retake
+              btns.push(<a key="1" className="retake-icon" title="Retake This Course" href="javascript:void(0);">retake</a>);
+            }
           }
 
           // Course Details
@@ -299,7 +291,7 @@ class IsoContent extends Component {
           //  Certificate
           if(data.certificateURI != "" && data.certificateURI != null && data.courseStatus == "completed")
           {
-            btns.push(<a key="6" className="certificate-icon pull-right" href={data.certificateURI} target="_blank" title="Certificate">certificate</a>);
+            btns.push(<a key="6" className="certificate-icon pull-right" href={data.certificateURI+"&token="+sessionStorage.auth} target="_blank" title="View Certificate">certificate</a>);
           }
 
           return (
@@ -384,15 +376,6 @@ class IsoContent extends Component {
 
     box(data,i)
     {
-      //  For Testing
-      //data.viewAssessmentURI = "https://player.360training.com/ICP4/ViewAssessmentResult.aspx?enrollmentId=10119745";
-      //data.enrollmentId = 10119745;
-      //data.isLocked = true;
-      //data.courseProgress = 10;
-      //data.certificateURI = "http://www.360training.com";
-      //data.expiryDate = "2016-08-22T23:59:59";
-      //console.log(data);
-
       var cData = [false,false];
       if(!data.isLocked && (data.courseStatus == "notstarted" || data.courseStatus == "inprogress"))
       {
@@ -400,7 +383,6 @@ class IsoContent extends Component {
       }
       data.isExpired = cData[0];
       data.isExpireSoon = cData[1];
-
       return(
         <div key={i} className={"iso-item single " + data.courseStatus}>
             <div className="front">
@@ -421,7 +403,7 @@ class IsoContent extends Component {
           return (
             <div>
               <div id="isotope">
-                  {this.state.list.map(this.box,this)}
+                {this.props.isotope.map(this.box,this)}
               </div>
               {this.checkAPIStatus()}
             </div>
@@ -436,9 +418,4 @@ class IsoContent extends Component {
     }
 }
 
-function mapStatToProps(state)
-{
-    return {"isotope":state.isotope,"currentDate":state.branding.serverCurrentDate};
-}
-
-export default connect(mapStatToProps,actions)(IsoContent);
+export default IsoContent;

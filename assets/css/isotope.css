@@ -1,11 +1,14 @@
 /* isotope */
 #isotope{
-	margin: 0px -4px;
+	margin: 0px -4px 15px;
 }
 #isotope:after {
   content: '';
   display: block;
   clear: both;
+}
+#isotope .pre-loader{
+	margin-top: -18px;
 }
 .iso-container.fixed #isotope{
 	margin-top: 50px;
@@ -52,6 +55,9 @@
 }
 .iso-main-btn.play::before{
 	background-image:url("../img/icons/play.svg");
+}
+.iso-main-btn.retake::before{
+	background-image:url("../img/icons/retake.svg");
 }
 .iso-container .iso-header{
 	background-color: #4d4d4d;

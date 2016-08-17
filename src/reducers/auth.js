@@ -13,7 +13,6 @@ export default function (state = {}, action) {
         }
         else
         {
-          //console.log(2);
           sessionStorage.removeItem("auth");
         }
       }

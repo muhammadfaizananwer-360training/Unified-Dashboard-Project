@@ -1,0 +1,71 @@
+{
+  "logo":{
+    "label":"360training",
+    "source":"../assets/img/logo.svg",
+    "url":"/LS360Dashboard"
+  },
+  "userData":{
+    "userName":"Username",
+    "email":"username@email.com",
+    "firstName":"firstName",
+    "lastName":"lastName"
+  },
+  "topMenu":{
+    "child":[
+      {"label":"Account Information","type":"account-info","url":"#"},
+      {"label":"Address Book","type":"address-book","url":"#"},
+      {"label":"My Orders","type":"orders","url":"#"},
+      {"label":"Billing & Subscription","type":"billing","url":"#"},
+      {"label":"Support","type":"support","url":"#"},
+      {"label":"MENU_DIVIDER","type":"menu_divider","url":"#"},
+      {"label":"Terms Of Use","type":"terms","url":"#"},
+      {"label":"Privacy Policy","type":"privacy-policy","url":"#"},
+      {"label":"MENU_DIVIDER","type":"menu_divider","url":"#"},
+      {"label":"Sign Out","type":"sign-out","url":"#"}
+    ]
+  },
+  "leftMenu":{
+      "label":"Dashboard",
+      "child":[
+        {
+          "label":"Learner",
+          "type":"learn",
+          "url":"#",
+          "child":[
+                {"label":"My Courses","type":"courses","url":"#"},
+                {"label":"My Subscriptions","type":"subscriptions","url":"#"}
+          ]
+        },
+        {
+          "label":"Author",
+          "type":"author",
+          "url":"#",
+          "child":[
+                {"label":"Create & Manage Courses","type":"create-course","url":"#"},
+                {"label":"Course Reports","type":"course-report","url":"#"}
+          ]
+        },
+        {
+          "label":"Manager",
+          "type":"manage",
+          "url":"#",
+          "child":[
+                {"label":"Manage Users","type":"manage-users","url":"#"},
+                {"label":"Enroll Users","type":"enroll-users","url":"#"},
+                {"label":"Run Reports","type":"run-report","url":"#"}
+          ]
+        },
+        {
+          "label":"Resources",
+          "type":"resources",
+          "url":"#",
+          "child":[
+                {"label":"Shop Courses","type":"shop","url":"#"},
+                {"label":"Browse Free Courses","type":"browse-free-courses","url":"#"},
+                {"label":"Support Forum","type":"support","url":"#"}
+          ]
+        }
+    ]
+  },
+  "serverCurrentDate":"2016-08-15"
+}

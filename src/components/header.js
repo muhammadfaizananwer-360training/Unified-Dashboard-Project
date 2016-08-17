@@ -26,11 +26,11 @@ class Header extends Component {
     var logoUrl = {backgroundImage: 'url("' + this.props.data.logo.source + '")'};
     return (
         <nav className="navbar-fixed-top">
-          <Link className="brand" to={this.props.data.logo.url} title={this.props.data.logo.label}></Link>
+          <a className="brand" href={this.props.data.logo.url} target="_blank" title={this.props.data.logo.label}></a>
           <ul className="menu">
     				<li className="user-detail">
-    					<a href="#"><div className="username">{this.props.data.user.firstName}</div>
-    					<div>{this.props.data.user.email}</div></a>
+    					<Link to="/LS360Dashboard/profile"><div className="username">{this.props.data.user.firstName}</div>
+    					<div>{this.props.data.user.email}</div></Link>
     				</li>
     				<li className={(this.props.config.isOpen?'open':'')}>
               <button className="dropdown-toggle" type="button" onClick={() => this.props.topMenuToggle(!this.props.config.isOpen)}><span className="glyphicon glyphicon-menu-down"></span></button>

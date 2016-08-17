@@ -5,6 +5,10 @@ import InputField from './helper/input-field';
 
 class Login extends Component {
 
+  static contextTypes = {
+    router:React.PropTypes.object
+  }
+
   componentWillMount()
   {
     this.state = {
@@ -31,10 +35,14 @@ class Login extends Component {
           }
         }
 		},100);
+
+    this.onKeyEnter = this.onKeyEnter.bind(this);
+    document.addEventListener('keyup',this.onKeyEnter);
   }
 
-  static contextTypes = {
-    router:React.PropTypes.object
+  componentWillUnmount()
+  {
+    document.removeEventListener('keyup',this.onKeyEnter);
   }
 
   componentDidMount()
@@ -87,10 +95,19 @@ class Login extends Component {
     }
   }
 
+  onKeyEnter(e)
+  {
+    var k=e.which||e.keyCode;
+    if(k==13 && !this.state.waiting && !this.state.allowLogin)
+    {
+      this.onSubmit();
+    }
+  }
+
   onSubmit()
   {
-    this.setState({"waiting": true});
-    this.props.authentication(true,this.state.email,this.state.pass);
+      this.setState({"waiting": true});
+      this.props.authentication(true,this.state.email,this.state.pass);
   }
 
   validationMsg()
@@ -107,7 +124,8 @@ class Login extends Component {
     }
   }
 
-  render() {
+  render()
+  {
     return (
       <div className="login-form">
         <div>

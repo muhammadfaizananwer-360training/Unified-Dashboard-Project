@@ -48,7 +48,7 @@ class Modal extends Component {
     }
     else if(typeof this.props.modal.src != "undefined")
     {
-        return <ExternalHtml iframe='iframe' src={this.props.modal.src} />;
+      return <ExternalHtml iframe='iframe' src={this.props.modal.src} />;
     }
   }
 

@@ -1,3 +1,5 @@
+var webpack = require('webpack');
+
 module.exports = {
   entry: [
     'babel-polyfill',
@@ -23,5 +25,25 @@ module.exports = {
   devServer: {
     historyApiFallback: true,
     contentBase: './'
-  }
+  },
+  plugins:[
+    new webpack.DefinePlugin({
+      'process.env': {
+        'NODE_ENV': '"production"',
+        'API_SERVER': JSON.stringify('http://10.0.215.78:8080'),
+        'APP_SERVER': JSON.stringify('http://10.0.215.78:8080'),
+        'MOCKED_DATA':false
+        /*
+          'http://10.0.215.78:8080' //QA
+          'http://10.0.100.97:8080' //DEV Noman
+          'http://10.0.100.94:8080' // DEV Irfan
+        */
+      }
+    }),
+    new webpack.optimize.UglifyJsPlugin({
+      compress:{
+        warnings: false
+      }
+    })
+  ]
 };

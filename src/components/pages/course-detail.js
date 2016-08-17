@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import ReactDOM from 'react-dom';
 import {connect} from 'react-redux';
 import * as actions from '../../actions';
 
@@ -73,7 +72,7 @@ class CourseDetail extends Component {
       {
           return (
             <div>
-               <table className="table table-striped course-detail">
+               <table className="table table-striped">
                   <thead>
                     <tr>
                       <th>Statistics</th>
@@ -152,7 +151,7 @@ class CourseDetail extends Component {
       }
       else
       {
-          return <div></div>;
+          return <div className="pre-loader"></div>;
       }
     }
 }

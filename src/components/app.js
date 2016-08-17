@@ -10,7 +10,6 @@ class App extends Component {
 
   componentWillMount()
   {
-    //console.log(this.props.auth);
     if(typeof this.props.auth != "undefined" && this.props.auth != false && this.props.auth != "false")
     {
       this.props.fetchBrand();

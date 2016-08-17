@@ -1,26 +1,55 @@
 import React, { Component } from 'react';
 import IsoContent from './isotope-content';
-var inst;
+import {connect} from 'react-redux';
+import * as actions from '../../actions';
 
 class IsoContainer extends Component {
 
   componentWillMount()
   {
-    inst = this;
     this.state = {
       "menu_open":false,
-      "affix":false
+      "affix":false,
+      "list":[],
+      "loadMore":false,
+      "isLoading":false,
+      "pageNo":0,
+      "pageSize":20,
+      "sortBy":"asc",
+      "filterBy":"all",
+      "search":""
     }
+    this.fetchIsotopeData();
   }
 
   componentDidMount()
   {
+    this.handleScroll = this.handleScroll.bind(this);
     document.getElementById("wrapper").addEventListener('scroll',this.handleScroll);
   }
 
   componentWillUnmount()
   {
     document.getElementById("wrapper").removeEventListener('scroll',this.handleScroll);
+    this.props.clearState("ISOTOPE");
+  }
+
+  componentWillReceiveProps(nextProps)
+  {
+    if(nextProps.isotope != "")
+    {
+      this.setState({"list": this.state.list.concat(nextProps.isotope)});
+    }
+    this.setState({"isLoading":false});
+  }
+
+  fetchIsotopeData()
+  {
+    if(!this.state.isLoading)
+    {
+      this.props.getIsotope();
+      this.setState({"isLoading":true});
+    }
   }
 
   onClickMenu()
@@ -30,27 +59,35 @@ class IsoContainer extends Component {
 
   handleScroll(e)
   {
-    if(e.target.scrollTop < 200)
+    var el = e.target;
+    if(el.scrollTop < 200)
     {
-      if(inst.state.affix)
-      {
-        //console.log(1);
-        inst.setState({"affix":false});
-      }
+      (this.state.affix?this.setState({"affix":false}):"");
     }
-    else if(!inst.state.affix)
+    else
     {
-      //console.log(2);
-      inst.setState({"affix":true});
+      (!this.state.affix?this.setState({"affix":true}):"");
+
+      //  At Bottom
+      if(el.offsetHeight-el.scrollHeight+el.scrollTop>-5)
+      {
+        this.fetchIsotopeData();
+      }
     }
   }
 
-  render() {
+  onSearch(event)
+  {
+    this.setState({"search": event.target.value});
+  }
+
+  render()
+  {
     return (
       <div className={"iso-container "+(this.state.affix?"fixed":"")}>
 				<ul className="iso-header">
 					<li className="search">
-						<input type="text" className="form-control" placeholder="Search Your Courses By Keyword"></input>
+						<input type="text" className="form-control" placeholder="Search Your Courses By Keyword" onChange={this.onSearch.bind(this)}></input>
 					</li>
 					<li className="filters">
 						<button type="button" className="active" data-filter="*">All</button>
@@ -80,9 +117,15 @@ class IsoContainer extends Component {
             </ul>
 					</li>
 				</ul>
-        <IsoContent />
+        <IsoContent isotope={this.state.list} isLoading={this.state.isLoading} getModal={this.props.getModal}/>
 			</div>
     );
   }
 }
-export default IsoContainer;
+
+function mapStatToProps(state)
+{
+    return {"isotope":state.isotope,"currentDate":state.branding.serverCurrentDate};
+}
+
+export default connect(mapStatToProps,actions)(IsoContainer);

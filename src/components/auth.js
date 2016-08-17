@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import {connect} from 'react-redux';
+import axios from 'axios';
 
 export default (Composition) => {
 
@@ -14,16 +15,10 @@ export default (Composition) => {
       if(typeof this.props.auth == "undefined" || this.props.auth == false || this.props.auth == "false")
       {
         this.context.router.push('/LS360Dashboard/login');
+        return;
       }
+      axios.defaults.headers.common['Authorization'] = "bearer "+this.props.auth;
     }
-
-    /*componentWillUpdate(nextProps)
-    {
-      if(!nextProps.auth)
-      {
-        this.context.router.push('/LS360Dashboard/login');
-      }
-    }*/
 
     render()
     {

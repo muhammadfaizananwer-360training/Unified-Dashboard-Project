@@ -10,10 +10,25 @@ class Token extends Component {
 
   componentWillMount()
   {
-    var token = window.location.search;
-    var l = token.length-1;
-    token = String(token).substr(1,l);
-    this.props.tokenVerify(token);
+    var parseToken = window.location.search;
+    var l = parseToken.length-1;
+    this.state = {
+      "token":String(parseToken).substr(1,l)
+    }
+    this.props.tokenVerify(this.state.token);
+  }
+
+  componentWillReceiveProps(nextProps)
+  {
+    if(typeof nextProps.verify.errors != "undefined")
+    {
+      this.context.router.push('/LS360Dashboard/login');
+    }
+    else
+    {
+      this.props.authentication(false,nextProps.verify.userName,"",this.state.token);
+      this.context.router.push('/LS360Dashboard/courses');
+    }
   }
 
   render()
